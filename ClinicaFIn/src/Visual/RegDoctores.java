@@ -13,11 +13,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 import logico.Clinica;
 import logico.Doctor;
 import logico.Enfermedad;
+import javax.swing.JTabbedPane;
 
 public class RegDoctores extends JPanel {
     private JTextField txtId;
@@ -34,6 +38,9 @@ public class RegDoctores extends JPanel {
     
 	private DefaultTableModel model;
 	private Object row[];
+	private Doctor doctorselec = null;
+	private JButton btnEliminar;
+	private JButton btnModificar;
 
     /**
      * Create the panel.
@@ -69,27 +76,94 @@ public class RegDoctores extends JPanel {
 		model = new DefaultTableModel();
 		model.setColumnIdentifiers(header);
 		table = new JTable();
+		
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setModel(model);
-
-        table = new JTable();
-        scrollPane.setViewportView(table);
+		scrollPane.setViewportView(table);
+        
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        scrollPane.setColumnHeaderView(tabbedPane);
         
         
 
         JButton btnNewButton = new JButton("Agregar");
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                agregarDoctor();
+            	Doctor doctores = new Doctor(
+            			txtId.getText(), 
+            			txtPassword.getText(), 
+            			txtCedula.getText(), 
+            			txtNombre.getText(), 
+            			txtApellido.getText(), 
+            			txtTelefono.getText(), 
+            			txtCorreo.getText(),
+            			txtEspecialidad.getText(),
+            			txtLicencia.getText()
+            			);
+            	Clinica.getInstance().agregarDoctor(doctores);
+            	
+                
+                JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
+                clean();
+                loadDoctores();
             }
         });
+        
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int index = table.getSelectedRow();
+				
+				if (index >= 0) {
+					btnNewButton.setEnabled(false);
+					btnModificar.setEnabled(true);
+					btnEliminar.setEnabled(true);
+				}
+				
+				Object idObject = table.getValueAt(index, 0);
+				String id = String.valueOf(idObject);
+				
+				doctorselec = Clinica.getInstance().buscarDoctorPorId(id);
+				if (doctorselec != null) {
+					txtId.setText(String.valueOf(doctorselec.getId()));
+					txtNombre.setText(doctorselec.getNombre());
+					txtApellido.setText(doctorselec.getApellido());
+					txtTelefono.setText(doctorselec.getTelefono());
+					txtCorreo.setText(doctorselec.getCorreoElectronico());
+					txtEspecialidad.setText(doctorselec.getEspecialidad());
+					txtLicencia.setText(doctorselec.getNumeroLicenciaMedica());
+
+					txtCedula.setText(doctorselec.getCedula());					
+				}			
+			}
+		});
+        
         btnNewButton.setBounds(900, 595, 120, 32);
         add(btnNewButton);
         btnNewButton.setEnabled(true);
 
-        JButton btnModificar = new JButton("Modificar");
+        btnModificar = new JButton("Modificar");
         btnModificar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+				Doctor doctores = new Doctor(            			
+						txtId.getText(), 
+            			txtPassword.getText(), 
+            			txtCedula.getText(), 
+            			txtNombre.getText(), 
+            			txtApellido.getText(), 
+            			txtTelefono.getText(), 
+            			txtCorreo.getText(),
+            			txtEspecialidad.getText(),
+            			txtLicencia.getText()
+            			);
+				Clinica.getInstance().actualizarDoctor(doctores.getId(), doctores);
+				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
+				clean();
+				loadDoctores();
+				
+				btnModificar.setEnabled(false);
+				btnEliminar.setEnabled(false);
+				btnNewButton.setEnabled(true);
                 
             }
         });
@@ -97,7 +171,31 @@ public class RegDoctores extends JPanel {
         add(btnModificar);
         btnModificar.setEnabled(false);
 
-        JButton btnEliminar = new JButton("Eliminar");
+        btnEliminar = new JButton("Eliminar");
+        btnEliminar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+				Doctor doctores = new Doctor(            			
+						txtId.getText(), 
+            			txtPassword.getText(), 
+            			txtCedula.getText(), 
+            			txtNombre.getText(), 
+            			txtApellido.getText(), 
+            			txtTelefono.getText(), 
+            			txtCorreo.getText(),
+            			txtEspecialidad.getText(),
+            			txtLicencia.getText()
+            			);
+				Clinica.getInstance().eliminarDoctor(doctores.getId());
+				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+				clean();
+				loadDoctores();
+				
+				btnModificar.setEnabled(false);
+				btnEliminar.setEnabled(false);
+				btnNewButton.setEnabled(true);
+        	}
+        });
+        btnEliminar.setEnabled(false);
         btnEliminar.setBounds(636, 595, 120, 32);
         add(btnEliminar);
 
@@ -198,24 +296,10 @@ public class RegDoctores extends JPanel {
         txtCedula.setColumns(10);
         txtCedula.setBounds(165, 480, 330, 32);
         add(txtCedula);
+        txtId.setText(""+Clinica.getIdDoctores());
+        loadDoctores();
     }
-
-    private void agregarDoctor() {
-    	Doctor doctor = new Doctor(
-    			txtId.getText(), 
-    			txtPassword.getText(), 
-    			txtCedula.getText(), 
-    			txtNombre.getText(), 
-    			txtApellido.getText(), 
-    			txtTelefono.getText(), 
-    			txtCorreo.getText()
-    			);
-    	
-        
-        JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
-        clean();
-        
-    }
+    
 
     private void clean() {
         txtId.setText("");
@@ -226,8 +310,19 @@ public class RegDoctores extends JPanel {
         txtCorreo.setText("");
         txtEspecialidad.setText("");
         txtLicencia.setText("");
+        txtCedula.setText("");
         txtUsuario.setText("");
         txtPassword.setText("");
     }
-    
+	private void loadDoctores() {
+		model.setRowCount(0);
+		row = new Object[model.getColumnCount()];
+		
+		for (Doctor doctores : Clinica.getInstance().getDoctores()) {
+			row[0] = doctores.getId();
+			row[1] = doctores.getNombre();
+			row[2] = doctores.getEspecialidad();
+			model.addRow(row);
+		}		
+	}
 }

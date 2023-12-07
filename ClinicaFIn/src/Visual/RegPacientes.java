@@ -2,6 +2,8 @@ package Visual;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
@@ -10,6 +12,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import logico.Clinica;
+import logico.Doctor;
 import logico.Paciente;
 
 public class RegPacientes extends JPanel {
@@ -18,6 +22,7 @@ public class RegPacientes extends JPanel {
     private JTextField textField;
     private JTextField textField_1;
     private JTextField textField_5;
+    private JTextField textField_2;
 
     /**
      * Create the panel.
@@ -57,7 +62,23 @@ public class RegPacientes extends JPanel {
         JButton btnNewButton = new JButton("Agregar");
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                //agregarPaciente();
+               	Doctor doctores = new Doctor(
+            			txtId.getText(), 
+            			txtPassword.getText(), 
+            			txtCedula.getText(), 
+            			txtNombre.getText(), 
+            			txtApellido.getText(), 
+            			txtTelefono.getText(), 
+            			txtCorreo.getText(),
+            			txtEspecialidad.getText(),
+            			txtLicencia.getText()
+            			);
+            	Clinica.getInstance().agregarDoctor(doctores);
+            	
+                
+                JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
+                clean();
+                loadDoctores();
             }
         });
         btnNewButton.setBounds(900, 617, 120, 32);
@@ -116,7 +137,7 @@ public class RegPacientes extends JPanel {
         
 		JLabel lblEspecialidad = new JLabel("Historial Cl\u00EDnico");
 		lblEspecialidad.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblEspecialidad.setBounds(28, 322, 147, 16);
+		lblEspecialidad.setBounds(30, 389, 147, 16);
 		add(lblEspecialidad);
 
 		
@@ -129,11 +150,11 @@ public class RegPacientes extends JPanel {
 			}
 
 		});
-		btnConsultas.setBounds(165, 315, 120, 32);
+		btnConsultas.setBounds(167, 382, 120, 32);
 		add(btnConsultas);
 		JLabel lblVacunas = new JLabel("Vacunas");
 		lblVacunas.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblVacunas.setBounds(28, 377, 147, 16);
+		lblVacunas.setBounds(30, 444, 147, 16);
 		add(lblVacunas);
 
 		JButton btnAdministrar = new JButton("Administrar");
@@ -150,9 +171,19 @@ public class RegPacientes extends JPanel {
 
 		});
 
-		btnAdministrar.setBounds(165, 370, 120, 32);
+		btnAdministrar.setBounds(167, 437, 120, 32);
 
 		add(btnAdministrar);
+		
+		JLabel lblNumeroSeguro = new JLabel("Numero seguro");
+		lblNumeroSeguro.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNumeroSeguro.setBounds(28, 320, 147, 16);
+		add(lblNumeroSeguro);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(165, 313, 330, 32);
+		add(textField_2);
 
 	}
 

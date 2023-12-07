@@ -15,11 +15,13 @@ public class Doctor extends Persona {
 	private static final long serialVersionUID = -4029156010399063867L;
 	
 	private String numeroLicenciaMedica;
-	private String Especialidad;
+	private String especialidad;
 
 	public Doctor(String id, String password, String cedula, String nombre, String apellido,
-			String telefono, String correoElectronico) {
+			String telefono, String correoElectronico, String especialidad, String numeroLicenciaMedica) {
 		super(id, password, cedula, nombre, apellido, telefono, correoElectronico);
+	    this.especialidad = especialidad;
+	    this.numeroLicenciaMedica = numeroLicenciaMedica;
 	}	
 	
 
@@ -31,10 +33,10 @@ public class Doctor extends Persona {
 		this.numeroLicenciaMedica = numeroLicenciaMedica;
 	}
 	public String getEspecialidad() {
-		return Especialidad;
+		return especialidad;
 	}
 	public void setEspecialidad(String especialidad) {
-		Especialidad = especialidad;
+		this.especialidad = especialidad;
 	}
 	
     public void guardarDatos() throws IOException {

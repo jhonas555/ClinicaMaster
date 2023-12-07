@@ -55,7 +55,7 @@ public class Clinica implements Serializable{
 
 
     private static void cargarDoctoresDesdeArchivo() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("doctores.dat"))) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("losDoctores.dat"))) {
             ArrayList<Doctor> loadedDoctores = (ArrayList<Doctor>) ois.readObject();
             if (loadedDoctores != null && !loadedDoctores.isEmpty()) {
                 clinica.losDoctores = loadedDoctores;
@@ -78,7 +78,7 @@ public class Clinica implements Serializable{
     }
 
     private static void guardarDoctoresEnArchivo() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("doctores.dat"))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("losDoctores.dat"))) {
             oos.writeObject(clinica.losDoctores);
         } catch (IOException e) {
             e.printStackTrace();
@@ -228,6 +228,12 @@ public class Clinica implements Serializable{
 	        return 0;
 	    }
 	}
+	public ArrayList<Doctor> getDoctores(){
+		return losDoctores;
+	}
+	public void setDoctores(ArrayList<Doctor> losDoctores) {
+		this.losDoctores = losDoctores;
+	}
 	
 	public ArrayList<Vacuna> getLasVacunas() {
 		return lasVacunas;
@@ -259,6 +265,9 @@ public class Clinica implements Serializable{
 	public void setLasPersonas(ArrayList<Persona> lasPersonas) {
 		this.lasPersonas = lasPersonas;
 	}	
+	public static int getIdDoctores() {
+		return idDoctores;
+	}
 	public static int getIdVacunas() {
 		return idVacunas;
 	}
@@ -281,6 +290,7 @@ public class Clinica implements Serializable{
 	    lasEnfermedades.add(enfermedad);
 	    guardarEnfermedadesEnArchivo();
 	}
+
 
 	public void eliminarEnfermedad(String id) {
 
