@@ -133,7 +133,7 @@ public class VisualMedico extends JFrame {
 		//mnNewMenu_1.setSelected(true);
 		
 		Dimension currentSize = mnNewMenu_1.getPreferredSize();
-		int additionalWidth = 20; // You can adjust this value
+		int additionalWidth = 20; 
 		int newWidth = currentSize.width + additionalWidth;
 		mnNewMenu_1.setPreferredSize(new Dimension(newWidth, currentSize.height));
 		
@@ -157,32 +157,12 @@ public class VisualMedico extends JFrame {
 		menuBar.add(mnNewMenu);
 		
 		currentSize = mnNewMenu.getPreferredSize();
-		additionalWidth = 20; // You can adjust this value
+		additionalWidth = 20;
 		newWidth = currentSize.width + additionalWidth;
 		mnNewMenu.setPreferredSize(new Dimension(newWidth, currentSize.height));
-		
-		JMenu mnViviendas = new JMenu("Viviendas");
-		mnViviendas.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				RegViviendas regviviendas = new RegViviendas();
-				regviviendas.setSize(1904,908);
-				regviviendas.setLocation(0,0);
-				
-				content.removeAll();
-				content.add(regviviendas, BorderLayout.CENTER);
-				content.revalidate();
-				content.repaint();
-			}
-		});
-		mnViviendas.setIcon(new ImageIcon(VisualMedico.class.getResource("/Fotos/home.png")));
-		menuBar.add(mnViviendas);
-		
-		currentSize = mnViviendas.getPreferredSize();
-		additionalWidth = 20; // You can adjust this value
+		additionalWidth = 20; 
 		newWidth = currentSize.width + additionalWidth;
-		mnViviendas.setPreferredSize(new Dimension(newWidth, currentSize.height));
-		additionalWidth = 20; // You can adjust this value
+		additionalWidth = 20;
 		newWidth = currentSize.width + additionalWidth;
 		
 		JMenu mnNewMenu_3 = new JMenu("Pacientes");
@@ -203,7 +183,7 @@ public class VisualMedico extends JFrame {
 		menuBar.add(mnNewMenu_3);
 		
 		currentSize = mnNewMenu_3.getPreferredSize();
-		additionalWidth = 20; // You can adjust this value
+		additionalWidth = 20; 
 		newWidth = currentSize.width + additionalWidth;
 		mnNewMenu_3.setPreferredSize(new Dimension(newWidth, currentSize.height));
 		
@@ -225,7 +205,7 @@ public class VisualMedico extends JFrame {
 		menuBar.add(mnNewMenu_4);
 		
 		currentSize = mnNewMenu_4.getPreferredSize();
-		additionalWidth = 20; // You can adjust this value
+		additionalWidth = 20; 
 		newWidth = currentSize.width + additionalWidth;
 		mnNewMenu_4.setPreferredSize(new Dimension(newWidth, currentSize.height));
 		
@@ -247,17 +227,17 @@ public class VisualMedico extends JFrame {
 		menuBar.add(mnNewMenu_5);
 		
 		currentSize = mnNewMenu_5.getPreferredSize();
-		additionalWidth = 20; // You can adjust this value
+		additionalWidth = 20; 
 		newWidth = currentSize.width + additionalWidth;
 		mnNewMenu_5.setPreferredSize(new Dimension(newWidth, currentSize.height));
-		additionalWidth = 20; // You can adjust this value
+		additionalWidth = 20; 
 		newWidth = currentSize.width + additionalWidth;
 		
 		JMenu mnNewMenu_7 = new JMenu("    Apariencia");
 		menuBar.add(mnNewMenu_7);
 		
 		currentSize = mnNewMenu_7.getPreferredSize();
-		additionalWidth = 20; // You can adjust this value
+		additionalWidth = 20; 
 		newWidth = currentSize.width + additionalWidth;
 		mnNewMenu_7.setPreferredSize(new Dimension(newWidth, currentSize.height));
 		
@@ -266,13 +246,8 @@ public class VisualMedico extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				FlatMaterialLighterIJTheme.setup();
 		        
-		        // Create a new instance of VisualMedico
 				VisualMedico newFrame = new VisualMedico();
-		        
-		        // Set the new frame visible
 		        newFrame.setVisible(true);
-		        
-		        // Dispose the current frame (optional)
 		        dispose();
 			}
 		});
@@ -291,14 +266,9 @@ public class VisualMedico extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-		        
-		        // Create a new instance of VisualMedico
+
 				VisualMedico newFrame = new VisualMedico();
-		        
-		        // Set the new frame visible
-		        newFrame.setVisible(true);
-		        
-		        // Dispose the current frame (optional)
+		        newFrame.setVisible(true);		    
 		        dispose();
 			}
 		});
@@ -322,8 +292,7 @@ public class VisualMedico extends JFrame {
 		content.repaint();	
 	}
 	
-	public static void LlamarRegConsultas(JPanel contentPane2, JPanel content /*poner el id del paciente*/) {// primer argumento es la clase del Jpane principal
-		// segundo argumento del Jpanel interior
+	public static void LlamarRegConsultas(JPanel contentPane2, JPanel content) {
 		RegConsultas regconsultas = new RegConsultas();
 		regconsultas.setSize(1904,908);
 		regconsultas.setLocation(0,0);
@@ -334,8 +303,4 @@ public class VisualMedico extends JFrame {
 		content.repaint();
 		
 	}
-	
-	
-	
-
 }
