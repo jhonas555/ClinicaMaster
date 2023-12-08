@@ -37,6 +37,7 @@ public class Clinica implements Serializable{
     private static int idDoctores = 1;
     private static int idPacientes = 1;
     private static int idConsultas = 1;
+    private static int idUsuarios = 1;
     private static Clinica clinica;
 	private static User loginUser;
 
@@ -63,6 +64,7 @@ public class Clinica implements Serializable{
         cargarCitasDesdeArchivo();
         cargarViviendasDesdeArchivo();
         cargarDoctoresDesdeArchivo();
+        cargarUsuarioDesdeArchivo();
         return clinica;
     }
   	
@@ -192,6 +194,64 @@ public User getUsuarioporUsuario(String string) {
 		}
 		return temp;
 	}
+
+
+public void agregarUser(User usuario) {
+    losUsuarios.add(usuario);
+    guardarUsuariosEnArchivo(); // Assuming there's a method to save the users to a file
+}
+
+public User buscarUsuarioPorNombre(String nombreUsuario) {
+    for (User usuario : losUsuarios) {
+        if (usuario.getUsuario().equalsIgnoreCase(nombreUsuario)) {
+            return usuario;
+        }
+    }
+    return null;
+}
+
+public void eliminarUsuario(String usuario) {
+    losUsuarios.removeIf(user -> user.getUsuario().equals(usuario));
+    guardarUsuariosEnArchivo(); 
+}
+
+private static void guardarUsuariosEnArchivo() {
+    try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Usuarios.dat"))) {
+        oos.writeObject(clinica.losUsuarios);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+private static void cargarUsuarioDesdeArchivo() {
+    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("losUsuarios.dat"))) {
+        ArrayList<User> loadedUsuarios = (ArrayList<User>) ois.readObject();
+        if (loadedUsuarios != null && !loadedUsuarios.isEmpty()) {
+            clinica.losUsuarios = loadedUsuarios;
+        } else {
+            clinica.losUsuarios = new ArrayList<>();
+        }
+    } catch (FileNotFoundException fileNotFoundException) {
+        clinica.losUsuarios = new ArrayList<>();
+    } catch (EOFException e) {
+    } catch (IOException | ClassNotFoundException e) {
+        e.printStackTrace();
+    }
+}
+
+
+public void actualizarUsuario(String usuario, User nuevoUsuario) {
+    for (User usuarios : losUsuarios) {
+        if (usuarios.getUsuario().equals(usuario)) {
+            usuarios.setPassword(nuevoUsuario.getPassword());
+            usuarios.setTipo(nuevoUsuario.getTipo());
+
+            break;
+        }
+    }
+    guardarUsuariosEnArchivo();
+}
+
 
 
 public void agregarConsulta(Consulta consulta) {
