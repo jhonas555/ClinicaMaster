@@ -99,6 +99,7 @@ public class RegCitas extends JPanel {
 					Clinica.getInstance().agregarCita(cita);
 					loadCitas();
 					clean();
+					JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Agregar", JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(null, "La fecha no es valida", "Fehca", JOptionPane.INFORMATION_MESSAGE);
 				}
@@ -123,6 +124,7 @@ public class RegCitas extends JPanel {
 		btnModificar.setEnabled(false);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		
 		btnEliminar.setBounds(636, 525, 120, 32);
 		add(btnEliminar);
 		btnEliminar.setEnabled(false);
@@ -192,6 +194,11 @@ public class RegCitas extends JPanel {
 		JButton button_1 = new JButton("Cita Nueva");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				btnModificar.setEnabled(false);
+				btnEliminar.setEnabled(false);
+				btnNewButton.setEnabled(true);
+				table.clearSelection();
+				clean();		
 			}
 		});
 		button_1.setBounds(504, 525, 120, 32);
@@ -246,13 +253,43 @@ public class RegCitas extends JPanel {
 					Clinica.getInstance().actualizarCita(cita.getId(), cita);
 					loadCitas();
 					clean();
+					
+					btnModificar.setEnabled(false);
+					btnEliminar.setEnabled(false);
+					btnNewButton.setEnabled(true);
+					JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Modificacion", JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(null, "La fecha no es valida", "Fehca", JOptionPane.INFORMATION_MESSAGE);
+					
 				}
 				
-				btnModificar.setEnabled(false);
-				btnEliminar.setEnabled(false);
-				btnNewButton.setEnabled(true);
+				
+			}
+		});
+		
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Date fecha = null;
+				try {
+					fecha = validateAndConvertToDate(txtFecha.getText());
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					fecha = null;
+				}
+				
+					Cita cita = new Cita(txtId.getText(), fecha ,doctorSelec, pacienteSelec);
+					Clinica.getInstance().eliminarCita(cita.getId());
+					loadCitas();
+					clean();
+					
+					btnModificar.setEnabled(false);
+					btnEliminar.setEnabled(false);
+					btnNewButton.setEnabled(true);
+				
+					JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Eliminacion", JOptionPane.INFORMATION_MESSAGE);
+					
+				
+				
 			}
 		});
 		
