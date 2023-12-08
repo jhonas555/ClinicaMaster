@@ -27,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 public class RegCitas extends JPanel {
 	private JTextField txtId;
@@ -38,6 +39,10 @@ public class RegCitas extends JPanel {
 	final static Paciente[] pacienteHolder = {null};
 	private Doctor doctorSelec = null;
 	private Paciente pacienteSelec = null;
+	
+	private DefaultTableModel model;
+	private Object row[];
+	private Enfermedad citaselec = null;
 
 	/**
 	 * Create the panel.
@@ -67,13 +72,16 @@ public class RegCitas extends JPanel {
 		add(txtId);
 		txtId.setColumns(10);
 		
+		String[] header = {"Id", "Fecha", "Doctor", "Paciente"};
+		model = new DefaultTableModel();
+		model.setColumnIdentifiers(header);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(1032, 13, 860, 870);
 		add(scrollPane);
 		
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
+		table.setModel(model);
 		scrollPane.setViewportView(table);
 		
 		JButton btnNewButton = new JButton("Agregar");
@@ -89,6 +97,7 @@ public class RegCitas extends JPanel {
 				if (fecha != null) {
 					Cita cita = new Cita(txtId.getText(), fecha ,doctorSelec, pacienteSelec);
 					Clinica.getInstance().agregarCita(cita);
+					loadCitas();
 					clean();
 				} else {
 					JOptionPane.showMessageDialog(null, "La fecha no es valida", "Fehca", JOptionPane.INFORMATION_MESSAGE);
@@ -108,10 +117,7 @@ public class RegCitas extends JPanel {
 		add(btnNewButton);
 		
 		JButton btnModificar = new JButton("Modificar");
-		btnModificar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		
 		btnModificar.setBounds(768, 525, 120, 32);
 		add(btnModificar);
 		btnModificar.setEnabled(false);
@@ -173,6 +179,9 @@ public class RegCitas extends JPanel {
 		button.setBounds(165, 260, 120, 32);
 		add(button);
 		
+		
+		
+		
 		txtPaciente = new JTextField();
 		txtPaciente.setEnabled(false);
 		txtPaciente.setEditable(false);
@@ -188,10 +197,15 @@ public class RegCitas extends JPanel {
 		button_1.setBounds(504, 525, 120, 32);
 		add(button_1);
 		
+		JLabel lblDdmmyyyyformatoObligatorio = new JLabel("dd/mm/yyyy (Formato obligatorio)");
+		lblDdmmyyyyformatoObligatorio.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblDdmmyyyyformatoObligatorio.setBounds(517, 158, 285, 16);
+		add(lblDdmmyyyyformatoObligatorio);
+		
 		
 		table.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				int index = table.getSelectedRow();
 				
 				if (index >= 0) {
@@ -209,12 +223,40 @@ public class RegCitas extends JPanel {
 					txtFecha.setText(citaselec.getFecha().toString());
 					txtDoctor.setText(citaselec.getDoctor().getNombre());		
 					txtPaciente.setText(citaselec.getPaciente().getNombre());	
+					doctorSelec = citaselec.getDoctor();
+					pacienteSelec = citaselec.getPaciente();
+					
 				}			
 				
 			}
 		});
 		
 		
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Date fecha = null;
+				try {
+					fecha = validateAndConvertToDate(txtFecha.getText());
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					fecha = null;
+				}
+				if (fecha != null) {
+					Cita cita = new Cita(txtId.getText(), fecha ,doctorSelec, pacienteSelec);
+					Clinica.getInstance().actualizarCita(cita.getId(), cita);
+					loadCitas();
+					clean();
+				} else {
+					JOptionPane.showMessageDialog(null, "La fecha no es valida", "Fehca", JOptionPane.INFORMATION_MESSAGE);
+				}
+				
+				btnModificar.setEnabled(false);
+				btnEliminar.setEnabled(false);
+				btnNewButton.setEnabled(true);
+			}
+		});
+		
+		loadCitas();
 	}
 	
 	public static Date validateAndConvertToDate(String inputDate) throws ParseException {
@@ -244,4 +286,18 @@ public class RegCitas extends JPanel {
 		
 		
 	}
+	
+	
+	private void loadCitas() {
+		model.setRowCount(0);
+		row = new Object[model.getColumnCount()];
+		
+		for (Cita cita : Clinica.getInstance().getLasCitas()) {
+			row[0] = cita.getId();
+			row[1] = cita.getFecha().toString();
+			row[2] = cita.getDoctor().getNombre();
+			row[3] = cita.getPaciente().getNombre();
+			model.addRow(row);
+		}		
+	}	
 }
