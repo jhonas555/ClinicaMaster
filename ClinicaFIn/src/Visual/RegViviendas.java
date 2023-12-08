@@ -36,6 +36,7 @@ public class RegViviendas extends JPanel {
 	private DefaultTableModel model;
 	private Object row[];
 	private Vivienda viviendaselec = null;
+	JButton btnEliminar;
 	
 	private ArrayList<Doctor> listaDoctor = new ArrayList<Doctor>();
 	private ArrayList<Paciente> listaPaciente = new ArrayList<Paciente>();
@@ -59,7 +60,7 @@ public class RegViviendas extends JPanel {
 		txtId = new JTextField();
 		txtId.setEditable(false);
 		txtId.setBounds(165, 95, 330, 32);
-		txtId.setText("V-"+Clinica.getIdViviendas());
+		
 		add(txtId);
 		txtId.setColumns(10);
 		
@@ -81,15 +82,7 @@ public class RegViviendas extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				Vivienda vivienda = new Vivienda(txtId.getText(), txtNombre.getText(), listaDoctor, listaPaciente);
 				System.out.println("Lista de Doctores:");
-		        for (Doctor doctor : listaDoctor) {
-		            System.out.println(doctor.getId().toString());
-		        }
-
-		        // Print the content of listaPaciente
-		        System.out.println("Lista de Pacientes:");
-		        for (Paciente paciente : listaPaciente) {
-		            System.out.println(paciente.getId().toString());
-		        }
+		        
 				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
 				
 				Clinica.getInstance().agregarVivienda(vivienda);
@@ -100,9 +93,18 @@ public class RegViviendas extends JPanel {
 		btnNewButton.setBounds(900, 512, 120, 32);
 		add(btnNewButton);
 		
-		JButton btnModificar = new JButton("Guardar");
+		JButton btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Vivienda vivienda = new Vivienda(txtId.getText(), txtNombre.getText(), listaDoctor, listaPaciente);
+				Clinica.getInstance().actualizarVivienda(vivienda.getId(), vivienda);
+				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Modificacion", JOptionPane.INFORMATION_MESSAGE);
+				clean();
+				loadViviendas();
+				
+				btnModificar.setEnabled(false);
+				btnEliminar.setEnabled(false);
+				btnNewButton.setEnabled(true);
 				
 			}
 		});
@@ -111,6 +113,19 @@ public class RegViviendas extends JPanel {
 		btnModificar.setEnabled(false);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Vivienda vivienda = new Vivienda(txtId.getText(), txtNombre.getText(), listaDoctor, listaPaciente);
+				Clinica.getInstance().eliminarVivienda(vivienda.getId());
+				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Eliminacion", JOptionPane.INFORMATION_MESSAGE);
+				clean();
+				loadViviendas();
+				
+				btnModificar.setEnabled(false);
+				btnEliminar.setEnabled(false);
+				btnNewButton.setEnabled(true);
+			}
+		});
 		btnEliminar.setBounds(636, 512, 120, 32);
 		add(btnEliminar);
 		btnEliminar.setEnabled(false);
@@ -133,7 +148,11 @@ public class RegViviendas extends JPanel {
 		JButton btnViviendaNueva = new JButton("Vivienda Nueva");
 		btnViviendaNueva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				btnModificar.setEnabled(false);
+				btnEliminar.setEnabled(false);
+				btnNewButton.setEnabled(true);
+				table.clearSelection();
+				clean();
 			}
 		});
 		btnViviendaNueva.setBounds(451, 512, 173, 32);
@@ -186,11 +205,12 @@ public class RegViviendas extends JPanel {
 		
 		
 		loadViviendas();
+		txtId.setText(""+Clinica.getIdViviendas());
 	}
 
 
 	private void clean() {
-		txtId.setText("");
+		txtId.setText(""+Clinica.getInstance().getIdViviendas());
 		txtNombre.setText("");
 		listaDoctor.clear();
 		listaPaciente.clear();
