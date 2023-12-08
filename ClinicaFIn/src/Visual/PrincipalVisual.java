@@ -58,6 +58,8 @@ public class PrincipalVisual extends JFrame {
 				try {
 					PrincipalVisual frame = new PrincipalVisual();
 					frame.setVisible(true);
+				//	IniciarSesion frame = new IniciarSesion();			Sirve para que muestre el inicio de sesión siempre de primero
+				//    frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
