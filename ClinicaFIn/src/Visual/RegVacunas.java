@@ -23,6 +23,8 @@ import javax.swing.JTable;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class RegVacunas extends JPanel {
 	private JTextField txtNumLote;
@@ -37,7 +39,6 @@ public class RegVacunas extends JPanel {
 	
 	private DefaultTableModel model;
 	private Object row[];
-	private Enfermedad citaselec = null;
 	/**
 	 * Create the panel.
 	 */
@@ -64,11 +65,16 @@ public class RegVacunas extends JPanel {
 		add(txtNumLote);
 		txtNumLote.setColumns(10);
 		
+		String[] header = {"Lote", "Nombre", "Fabricante", "Enfermedad"};
+		model = new DefaultTableModel();
+		model.setColumnIdentifiers(header);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(1032, 13, 860, 870);
 		add(scrollPane);
 		
 		table = new JTable();
+		
+		table.setModel(model);
 		scrollPane.setViewportView(table);
 		
 		JButton btnNewButton = new JButton("Agregar");
@@ -87,15 +93,13 @@ public class RegVacunas extends JPanel {
 		add(btnNewButton);
 		
 		JButton btnModificar = new JButton("Modificar");
-		btnModificar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		
 		btnModificar.setBounds(768, 573, 120, 32);
 		add(btnModificar);
 		btnModificar.setEnabled(false);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		
 		btnEliminar.setBounds(636, 573, 120, 32);
 		add(btnEliminar);
 		btnEliminar.setEnabled(false);
@@ -113,6 +117,11 @@ public class RegVacunas extends JPanel {
 		JButton btnVacunaNueva = new JButton("Vacuna Nueva");
 		btnVacunaNueva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				btnModificar.setEnabled(false);
+				btnEliminar.setEnabled(false);
+				btnNewButton.setEnabled(true);
+				table.clearSelection();
+				clean();	
 			}
 		});
 		btnVacunaNueva.setBounds(504, 573, 120, 32);
@@ -134,15 +143,92 @@ public class RegVacunas extends JPanel {
 		add(lblEnfermedades);
 		
 		txtEnfermedad = new JTextField();
+		txtEnfermedad.setEnabled(false);
+		txtEnfermedad.setEditable(false);
 		txtEnfermedad.setColumns(10);
-		txtEnfermedad.setBounds(165, 260, 330, 32);
+		txtEnfermedad.setBounds(303, 260, 192, 32);
 		add(txtEnfermedad);
+		
+		JButton btnSeleccionar = new JButton("Seleccionar");
+		btnSeleccionar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				SeleccionarEnfermedad seleccionarenfermedad = new SeleccionarEnfermedad(enfermedadHolder);
+				seleccionarenfermedad.setVisible(true);
+				enfermedadSelec = enfermedadHolder[0];
+				txtEnfermedad.setText(enfermedadSelec.getNombre());
+			}
+		});
+		btnSeleccionar.setBounds(165, 260, 120, 32);
+		add(btnSeleccionar);
+		
+		
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				int index = table.getSelectedRow();
+				
+				if (index >= 0) {
+					btnNewButton.setEnabled(false);
+					btnModificar.setEnabled(true);
+					btnEliminar.setEnabled(true);
+				}
+				
+				Object idObject = table.getValueAt(index, 0);
+				String id = String.valueOf(idObject);
+				
+				Vacuna vacuna = Clinica.getInstance().buscarVacunaPorNumeroLote(id);
+				if (vacuna != null) {
+					txtNumLote.setText(vacuna.getNumeroLote());
+					txtNombre.setText(vacuna.getNombre());
+					txtFabricante.setText(vacuna.getFabricante());		
+					txtEnfermedad.setText(vacuna.getEnfermedad().getNombre());
+					enfermedadSelec = vacuna.getEnfermedad();
+				}		
+			}
+		});
+		
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Vacuna vacuna = new Vacuna(txtNumLote.getText(), txtNombre.getText(), txtFabricante.getText(), enfermedadSelec);
+				Clinica.getInstance().actualizarVacuna(txtNumLote.getText(), vacuna);
+				
+				clean();
+				loadVacunas();
+				
+				btnModificar.setEnabled(false);
+				btnEliminar.setEnabled(false);
+				btnNewButton.setEnabled(true);
+				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Modificacion", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Vacuna vacuna = new Vacuna(txtNumLote.getText(), txtNombre.getText(), txtFabricante.getText(), enfermedadSelec);
+				Clinica.getInstance().eliminarVacuna(txtNumLote.getText());
+				
+				clean();
+				loadVacunas();
+				
+				btnModificar.setEnabled(false);
+				btnEliminar.setEnabled(false);
+				btnNewButton.setEnabled(true);
+				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Eliminacion", JOptionPane.INFORMATION_MESSAGE);
+				
+			}
+		});
+					
+		loadVacunas();
+		txtNumLote.setText(""+Clinica.getIdVacunas());		
 	}
 	
 	
 	private void clean() {
-		// TODO Auto-generated method stub
-		
+		txtNumLote.setText(""+Clinica.getIdVacunas());		
+		txtNombre.setText("");
+		txtFabricante.setText("");
+		txtEnfermedad.setText("");
+		enfermedadSelec = null;
 	}
 	
 	
@@ -158,5 +244,4 @@ public class RegVacunas extends JPanel {
 			model.addRow(row);
 		}		
 	}	
-	
 }
