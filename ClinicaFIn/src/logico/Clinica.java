@@ -153,6 +153,10 @@ public class Clinica implements Serializable{
 		return idPacientes;
 	}	
 	
+	public static int getIdConsultas() {
+		return idConsultas;
+	}
+	
 	
 	public void AgregarUser(User user) {
 		losUsuarios.add(user);
