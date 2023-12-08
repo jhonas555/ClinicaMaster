@@ -15,10 +15,10 @@ public class Consulta implements Serializable{
 	private String diagnostico;
 	private ArrayList<Enfermedad> lasEnfermedades;
 	
-	public Consulta(String id, Date fecha, String motivo, String diagnostico, ArrayList<Enfermedad> lasEnfermedades) {
+	public Consulta(String id, String string, String motivo, String diagnostico, ArrayList<Enfermedad> lasEnfermedades) {
 		super();
 		this.id = id;
-		this.fecha = fecha;
+		//this.fecha = string;
 		this.motivo = motivo;
 		this.diagnostico = diagnostico;
 		this.lasEnfermedades = new ArrayList<>();
