@@ -9,6 +9,8 @@ import java.awt.Font;
 import javax.swing.JTextField;
 
 import logico.Clinica;
+import logico.Doctor;
+import logico.Paciente;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -20,8 +22,11 @@ public class RegCitas extends JPanel {
 	private JTextField txtId;
 	private JTable table;
 	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField txtDoctor;
 	private JTextField textField_2;
+	final static Doctor[] doctorHolder = {null};
+	private Doctor doctorSelec = null;
+	private Paciente pacienteSelec = null;
 
 	/**
 	 * Create the panel.
@@ -96,6 +101,10 @@ public class RegCitas extends JPanel {
 		JButton btnSeleccionar = new JButton("Seleccionar");
 		btnSeleccionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				SeleccionarDoctor seleccionardoctor = new SeleccionarDoctor(doctorHolder);
+				seleccionardoctor.setVisible(true);
+				doctorSelec = doctorHolder[0];
+				txtDoctor.setText(doctorSelec.getNombre());
 				
 			}
 		});
@@ -107,16 +116,26 @@ public class RegCitas extends JPanel {
 		lblPaciente.setBounds(28, 267, 80, 16);
 		add(lblPaciente);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(300, 205, 195, 32);
-		add(textField_1);
+		txtDoctor = new JTextField();
+		txtDoctor.setEditable(false);
+		txtDoctor.setEnabled(false);
+		txtDoctor.setColumns(10);
+		txtDoctor.setBounds(300, 205, 195, 32);
+		add(txtDoctor);
 		
 		JButton button = new JButton("Seleccionar");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SeleccionarPaciente seleccionarpaciente = new SeleccionarPaciente();
+				seleccionarpaciente.setVisible(true);
+			}
+		});
 		button.setBounds(165, 260, 120, 32);
 		add(button);
 		
 		textField_2 = new JTextField();
+		textField_2.setEnabled(false);
+		textField_2.setEditable(false);
 		textField_2.setColumns(10);
 		textField_2.setBounds(300, 260, 195, 32);
 		add(textField_2);
