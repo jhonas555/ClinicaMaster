@@ -23,8 +23,9 @@ public class RegCitas extends JPanel {
 	private JTable table;
 	private JTextField textField;
 	private JTextField txtDoctor;
-	private JTextField textField_2;
+	private JTextField txtPaciente;
 	final static Doctor[] doctorHolder = {null};
+	final static Paciente[] pacienteHolder = {null};
 	private Doctor doctorSelec = null;
 	private Paciente pacienteSelec = null;
 
@@ -126,19 +127,21 @@ public class RegCitas extends JPanel {
 		JButton button = new JButton("Seleccionar");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SeleccionarPaciente seleccionarpaciente = new SeleccionarPaciente();
+				SeleccionarPaciente seleccionarpaciente = new SeleccionarPaciente(pacienteHolder);
 				seleccionarpaciente.setVisible(true);
+				pacienteSelec = pacienteHolder[0];
+				txtPaciente.setText(pacienteSelec.getNombre());
 			}
 		});
 		button.setBounds(165, 260, 120, 32);
 		add(button);
 		
-		textField_2 = new JTextField();
-		textField_2.setEnabled(false);
-		textField_2.setEditable(false);
-		textField_2.setColumns(10);
-		textField_2.setBounds(300, 260, 195, 32);
-		add(textField_2);
+		txtPaciente = new JTextField();
+		txtPaciente.setEnabled(false);
+		txtPaciente.setEditable(false);
+		txtPaciente.setColumns(10);
+		txtPaciente.setBounds(300, 260, 195, 32);
+		add(txtPaciente);
 		
 		JButton button_1 = new JButton("Cita Nueva");
 		button_1.addActionListener(new ActionListener() {

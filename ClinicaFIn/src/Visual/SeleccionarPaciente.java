@@ -19,6 +19,10 @@ import logico.Paciente;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class SeleccionarPaciente extends JDialog {
 
@@ -26,7 +30,7 @@ public class SeleccionarPaciente extends JDialog {
 	private JTable table;
 	private DefaultTableModel model;
 	private Object[] row;
-
+	final static Paciente[] pacienteHolder = {null};
 	/**
 	 * Launch the application.
 	 */
@@ -39,7 +43,7 @@ public class SeleccionarPaciente extends JDialog {
 		}
 		
 		try {
-			SeleccionarPaciente dialog = new SeleccionarPaciente();
+			SeleccionarPaciente dialog = new SeleccionarPaciente(pacienteHolder);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -49,11 +53,13 @@ public class SeleccionarPaciente extends JDialog {
 
 	/**
 	 * Create the dialog.
+	 * @param pacienteholder2 
 	 */
-	public SeleccionarPaciente() {
+	public SeleccionarPaciente(Paciente[] pacienteholder2) {
 		setTitle("Seleccionar Paciente");
 		setBounds(100, 100, 595, 385);
 		setLocationRelativeTo(null);
+		setModal(true);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -69,6 +75,16 @@ public class SeleccionarPaciente extends JDialog {
 					model = new DefaultTableModel();
 					model.setColumnIdentifiers(header);
 					table = new JTable();
+					table.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mousePressed(MouseEvent arg0) {
+							int index = table.getSelectedRow();
+							Object idObject = table.getValueAt(index, 0);
+							String id = String.valueOf(idObject);
+							
+							pacienteholder2[0] = Clinica.getInstance().buscarPacientePorId(id);
+						}
+					});
 					table.setModel(model);
 					scrollPane_1.setViewportView(table);
 					
@@ -81,6 +97,11 @@ public class SeleccionarPaciente extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Seleccionar");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dispose();
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
