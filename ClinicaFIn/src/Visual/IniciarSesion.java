@@ -137,14 +137,29 @@ public class IniciarSesion extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				if (Clinica.getInstance().confirmLogin(txtUser.getText(), String.valueOf(txtPass.getPassword()))) {
-					PrincipalVisual frame = new PrincipalVisual();
-					dispose();
-					frame.setVisible(true);
-				} else {
-					JOptionPane.showMessageDialog(null, "El usuario ingresado no es válido", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				String usuario = txtUser.getText();
+			    String password = String.valueOf(txtPass.getPassword());
+
+			    if (Clinica.getInstance().confirmLogin(usuario, password)) {
+			        User usuarioLogueado = Clinica.getInstance().getLoginUser();
+
+			        if (usuarioLogueado != null) {
+			            String tipoUsuario = usuarioLogueado.getTipo();
+
+			            if ("Administrador".equals(tipoUsuario)) {
+			                PrincipalVisual frameAdmin = new PrincipalVisual();
+			                dispose();
+			                frameAdmin.setVisible(true);
+			            } else if ("Médico".equals(tipoUsuario)) {
+			                VisualMedico frameMedico = new VisualMedico();
+			                dispose();
+			                frameMedico.setVisible(true);
+			            } 
+			        }
+			    } else {
+			        JOptionPane.showMessageDialog(null, "El usuario ingresado no es válido", "Error",
+			                JOptionPane.ERROR_MESSAGE);
+			    }
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));

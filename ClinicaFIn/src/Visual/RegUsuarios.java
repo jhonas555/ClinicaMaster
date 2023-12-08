@@ -106,6 +106,7 @@ public class RegUsuarios extends JPanel {
 		add(lblTipo);
 		
 		cmbtipo = new JComboBox();
+		cmbtipo.setModel(new DefaultComboBoxModel(new String[] {"<Seleccionar>", "Administrador", "M\u00E9dico"}));
 		cmbtipo.setBounds(165, 218, 149, 20);
 		add(cmbtipo);
 	}

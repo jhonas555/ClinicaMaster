@@ -12,6 +12,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import Visual.PrincipalVisual;
+import Visual.VisualMedico;
+
 
 public class Clinica implements Serializable{
 	
