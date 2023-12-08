@@ -1,6 +1,7 @@
 package Visual;
 
 import javax.swing.JPanel;
+
 import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,8 +33,6 @@ public class RegDoctores extends JPanel {
     private JTextField txtCorreo;
     private JTextField txtEspecialidad;
     private JTextField txtLicencia;
-    private JTextField txtPassword;
-    private JTextField txtUsuario;
     private JTextField txtCedula;
     
 	private DefaultTableModel model;
@@ -92,7 +91,6 @@ public class RegDoctores extends JPanel {
             public void actionPerformed(ActionEvent arg0) {
             	Doctor doctores = new Doctor(
             			txtId.getText(), 
-            			txtPassword.getText(), 
             			txtCedula.getText(), 
             			txtNombre.getText(), 
             			txtApellido.getText(), 
@@ -147,8 +145,7 @@ public class RegDoctores extends JPanel {
         btnModificar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 				Doctor doctores = new Doctor(            			
-						txtId.getText(), 
-            			txtPassword.getText(), 
+						txtId.getText(),
             			txtCedula.getText(), 
             			txtNombre.getText(), 
             			txtApellido.getText(), 
@@ -177,7 +174,6 @@ public class RegDoctores extends JPanel {
         	public void actionPerformed(ActionEvent e) {
 				Doctor doctores = new Doctor(            			
 						txtId.getText(), 
-            			txtPassword.getText(), 
             			txtCedula.getText(), 
             			txtNombre.getText(), 
             			txtApellido.getText(), 
@@ -215,13 +211,13 @@ public class RegDoctores extends JPanel {
         lblId.setBounds(28, 103, 135, 16);
         add(lblId);
 
-        JButton button_1 = new JButton("Cita Nueva");
-        button_1.addActionListener(new ActionListener() {
+        JButton btnNuevoDoctor = new JButton("Nuevo Doctor");
+        btnNuevoDoctor.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             }
         });
-        button_1.setBounds(504, 595, 120, 32);
-        add(button_1);
+        btnNuevoDoctor.setBounds(504, 595, 120, 32);
+        add(btnNuevoDoctor);
 
         txtNombre = new JTextField();
         txtNombre.setColumns(10);
@@ -267,26 +263,6 @@ public class RegDoctores extends JPanel {
         lblLicenciaMdica.setFont(new Font("Tahoma", Font.BOLD, 14));
         lblLicenciaMdica.setBounds(28, 432, 147, 16);
         add(lblLicenciaMdica);
-
-        JLabel label = new JLabel("Contrase\u00F1a");
-        label.setFont(new Font("Tahoma", Font.BOLD, 14));
-        label.setBounds(520, 157, 88, 16);
-        add(label);
-
-        txtPassword = new JTextField();
-        txtPassword.setColumns(10);
-        txtPassword.setBounds(657, 150, 330, 32);
-        add(txtPassword);
-
-        txtUsuario = new JTextField();
-        txtUsuario.setColumns(10);
-        txtUsuario.setBounds(657, 96, 330, 32);
-        add(txtUsuario);
-
-        JLabel label_1 = new JLabel("Usuario");
-        label_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-        label_1.setBounds(520, 103, 135, 16);
-        add(label_1);
         
         JLabel lblCdula = new JLabel("C\u00E9dula");
         lblCdula.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -312,8 +288,6 @@ public class RegDoctores extends JPanel {
         txtEspecialidad.setText("");
         txtLicencia.setText("");
         txtCedula.setText("");
-        txtUsuario.setText("");
-        txtPassword.setText("");
     }
 	private void loadDoctores() {
 		model.setRowCount(0);

@@ -19,12 +19,10 @@ public class Paciente extends Persona {
 	private Historial_Clinica historial;
 	private ArrayList<Vacuna> lasVacunas;
 	
-	public Paciente(String id, String password, String cedula, String nombre, String apellido,
+	public Paciente(String id, String cedula, String nombre, String apellido,
 			String telefono, String correoElectronico, String numeroSeguro) {
-		super(id, password, cedula, nombre, apellido, telefono, correoElectronico);
-		this.numeroSeguro = numeroSeguro;
-
-		
+		super(id, cedula, nombre, apellido, telefono, correoElectronico);
+		this.numeroSeguro = numeroSeguro;		
 	}
 	
 	public String getNumeroSeguro() {

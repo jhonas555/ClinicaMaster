@@ -90,8 +90,7 @@ public class RegPacientes extends JPanel {
             			txtTelefono.getText(),
             			txtCedula.getText(),  
             			txtCorreo.getText(),
-            			txtNumSeg.getText(),
-            			null
+            			txtNumSeg.getText()
             			);
             	Clinica.getInstance().agregarPacientes(pacientes);
             	
@@ -136,7 +135,6 @@ public class RegPacientes extends JPanel {
             public void actionPerformed(ActionEvent e) {
                	Paciente pacientes = new Paciente(
             			txtId.getText(), 
-            			"", 
             			txtCedula.getText(), 
             			txtNombre.getText(), 
             			txtApellido.getText(), 
@@ -163,7 +161,6 @@ public class RegPacientes extends JPanel {
         	public void actionPerformed(ActionEvent e) {
                	Paciente pacientes = new Paciente(
             			txtId.getText(), 
-            			"", 
             			txtCedula.getText(), 
             			txtNombre.getText(), 
             			txtApellido.getText(), 
