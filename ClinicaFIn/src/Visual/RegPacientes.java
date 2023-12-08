@@ -276,7 +276,7 @@ public class RegPacientes extends JPanel {
 		txtTelefono.setBounds(165, 262, 330, 32);
 		add(txtTelefono);
 		
-		JLabel lblTelefono = new JLabel("Telefono");
+		JLabel lblTelefono = new JLabel("Tel\u00E9fono");
 		lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblTelefono.setBounds(28, 269, 81, 16);
 		add(lblTelefono);

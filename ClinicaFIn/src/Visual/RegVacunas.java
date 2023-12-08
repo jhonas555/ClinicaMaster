@@ -63,6 +63,7 @@ public class RegVacunas extends JPanel {
 		
 		txtNumLote = new JTextField();
 		txtNumLote.setBounds(165, 96, 330, 32);
+		txtNumLote.setText("V-"+Clinica.getIdVacunas());
 		add(txtNumLote);
 		txtNumLote.setColumns(10);
 		
@@ -113,7 +114,7 @@ public class RegVacunas extends JPanel {
 		lblFecha.setBounds(28, 157, 56, 16);
 		add(lblFecha);
 		
-		JLabel lblId = new JLabel("Numero Lote");
+		JLabel lblId = new JLabel("N\u00FAmero Lote");
 		lblId.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblId.setBounds(28, 103, 135, 16);
 		add(lblId);
@@ -223,7 +224,6 @@ public class RegVacunas extends JPanel {
 		});
 					
 		loadVacunas();
-		txtNumLote.setText(""+Clinica.getIdVacunas());		
 	}
 	
 	

@@ -113,7 +113,7 @@ public class IniciarSesion extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Iniciar Sesion");
+		JLabel lblNewLabel = new JLabel("Iniciar Sesi\u00F3n");
 		lblNewLabel.setFont(new Font("Segoe UI Light", Font.BOLD, 30));
 		lblNewLabel.setBounds(224, 39, 198, 58);
 		panel.add(lblNewLabel);
