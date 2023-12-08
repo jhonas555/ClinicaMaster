@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class RegVacunas extends JPanel {
-	private JTextField idCita;
+	private JTextField txtNumLote;
 	private JTable table;
 	private JTextField textField_1;
 	private JTextField textField;
@@ -40,10 +40,10 @@ public class RegVacunas extends JPanel {
 		lblNewLabel_2.setBounds(28, 212, 80, 16);
 		add(lblNewLabel_2);
 		
-		idCita = new JTextField();
-		idCita.setBounds(165, 96, 330, 32);
-		add(idCita);
-		idCita.setColumns(10);
+		txtNumLote = new JTextField();
+		txtNumLote.setBounds(165, 96, 330, 32);
+		add(txtNumLote);
+		txtNumLote.setColumns(10);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(1032, 13, 860, 870);

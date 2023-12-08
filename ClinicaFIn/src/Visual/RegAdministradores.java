@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class RegAdministradores extends JPanel {
-	private JTextField idCita;
+	private JTextField txtId;
 	private JTable table;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -44,10 +44,11 @@ public class RegAdministradores extends JPanel {
 		lblNewLabel_2.setBounds(28, 212, 56, 16);
 		add(lblNewLabel_2);
 		
-		idCita = new JTextField();
-		idCita.setBounds(165, 96, 330, 32);
-		add(idCita);
-		idCita.setColumns(10);
+		txtId = new JTextField();
+		txtId.setEditable(false);
+		txtId.setBounds(165, 96, 330, 32);
+		add(txtId);
+		txtId.setColumns(10);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(1032, 13, 860, 870);

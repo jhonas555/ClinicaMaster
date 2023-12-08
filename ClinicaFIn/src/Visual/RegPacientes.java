@@ -21,7 +21,7 @@ import logico.Doctor;
 import logico.Paciente;
 
 public class RegPacientes extends JPanel {
-    private JTextField idCita;
+    private JTextField txtId;
     private JTable table;
     private JTextField txtApellido;
     private JTextField txtNombre;
@@ -59,10 +59,11 @@ public class RegPacientes extends JPanel {
         lblNewLabel_2.setBounds(28, 212, 56, 16);
         add(lblNewLabel_2);
 
-        idCita = new JTextField();
-        idCita.setBounds(165, 96, 330, 32);
-        add(idCita);
-        idCita.setColumns(10);
+        txtId = new JTextField();
+        txtId.setEditable(false);
+        txtId.setBounds(165, 96, 330, 32);
+        add(txtId);
+        txtId.setColumns(10);
 
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(1032, 13, 860, 870);
@@ -81,7 +82,7 @@ public class RegPacientes extends JPanel {
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                	Paciente pacientes = new Paciente(
-            			idCita.getText(), 
+            			txtId.getText(), 
             			"", 
             			txtCedula.getText(), 
             			txtNombre.getText(), 
@@ -114,7 +115,7 @@ public class RegPacientes extends JPanel {
 				
 				pacienteselec = Clinica.getInstance().buscarPacientePorId(id);
 				if (pacienteselec != null) {
-					idCita.setText(String.valueOf(pacienteselec.getId()));
+					txtId.setText(String.valueOf(pacienteselec.getId()));
 					txtNombre.setText(pacienteselec.getNombre());
 					txtApellido.setText(pacienteselec.getApellido());
 					txtTelefono.setText(pacienteselec.getTelefono());
@@ -132,7 +133,7 @@ public class RegPacientes extends JPanel {
         btnModificar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                	Paciente pacientes = new Paciente(
-            			idCita.getText(), 
+            			txtId.getText(), 
             			"", 
             			txtCedula.getText(), 
             			txtNombre.getText(), 
@@ -159,7 +160,7 @@ public class RegPacientes extends JPanel {
         btnEliminar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
                	Paciente pacientes = new Paciente(
-            			idCita.getText(), 
+            			txtId.getText(), 
             			"", 
             			txtCedula.getText(), 
             			txtNombre.getText(), 
@@ -222,7 +223,7 @@ public class RegPacientes extends JPanel {
         
 		JLabel lblEspecialidad = new JLabel("Historial Cl\u00EDnico");
 		lblEspecialidad.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblEspecialidad.setBounds(30, 508, 147, 16);
+		lblEspecialidad.setBounds(28, 507, 147, 16);
 		add(lblEspecialidad);
 
 		
@@ -260,7 +261,7 @@ public class RegPacientes extends JPanel {
 
 		add(btnAdministrar);
 		
-		JLabel lblNumeroSeguro = new JLabel("Numero seguro");
+		JLabel lblNumeroSeguro = new JLabel("N\u00FAmero seguro");
 		lblNumeroSeguro.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNumeroSeguro.setBounds(28, 439, 147, 16);
 		add(lblNumeroSeguro);
@@ -285,7 +286,7 @@ public class RegPacientes extends JPanel {
 		lblTelefono.setBounds(28, 269, 81, 16);
 		add(lblTelefono);
 		
-		JLabel lblCedula = new JLabel("Cedula");
+		JLabel lblCedula = new JLabel("C\u00E9dula");
 		lblCedula.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblCedula.setBounds(28, 324, 56, 16);
 		add(lblCedula);
@@ -294,7 +295,7 @@ public class RegPacientes extends JPanel {
 	}
 
     private void limpiarCampos() {
-        idCita.setText("");
+        txtId.setText("");
         txtNombre.setText("");
         txtApellido.setText("");
         txtCorreo.setText("");

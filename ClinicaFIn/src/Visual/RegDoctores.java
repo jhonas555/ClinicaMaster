@@ -64,6 +64,7 @@ public class RegDoctores extends JPanel {
         add(lblNewLabel_2);
 
         txtId = new JTextField();
+        txtId.setEditable(false);
         txtId.setBounds(165, 96, 330, 32);
         add(txtId);
         txtId.setColumns(10);

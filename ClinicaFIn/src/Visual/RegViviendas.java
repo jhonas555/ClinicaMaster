@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class RegViviendas extends JPanel {
-	private JTextField idCita;
+	private JTextField txtId;
 	private JTable table;
 	private JTextField textField;
 
@@ -34,10 +34,11 @@ public class RegViviendas extends JPanel {
 		lblNewLabel_1.setBounds(28, 47, 494, 16);
 		add(lblNewLabel_1);
 		
-		idCita = new JTextField();
-		idCita.setBounds(165, 95, 330, 32);
-		add(idCita);
-		idCita.setColumns(10);
+		txtId = new JTextField();
+		txtId.setEditable(false);
+		txtId.setBounds(165, 95, 330, 32);
+		add(txtId);
+		txtId.setColumns(10);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(1032, 13, 860, 870);
