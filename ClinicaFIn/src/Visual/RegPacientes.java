@@ -1,5 +1,6 @@
 package Visual;
 import javax.swing.JPanel;
+
 import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -62,6 +63,7 @@ public class RegPacientes extends JPanel {
         txtId = new JTextField();
         txtId.setEditable(false);
         txtId.setBounds(165, 96, 330, 32);
+        txtId.setText("P-"+Clinica.getIdPcientes());
         add(txtId);
         txtId.setColumns(10);
 
@@ -82,14 +84,14 @@ public class RegPacientes extends JPanel {
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                	Paciente pacientes = new Paciente(
-            			txtId.getText(), 
-            			"", 
-            			txtCedula.getText(), 
+            			txtId.getText(),
             			txtNombre.getText(), 
             			txtApellido.getText(), 
-            			txtTelefono.getText(), 
+            			txtTelefono.getText(),
+            			txtCedula.getText(),  
             			txtCorreo.getText(),
-            			txtNumSeg.getText()
+            			txtNumSeg.getText(),
+            			null
             			);
             	Clinica.getInstance().agregarPacientes(pacientes);
             	
@@ -225,16 +227,13 @@ public class RegPacientes extends JPanel {
 		lblEspecialidad.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblEspecialidad.setBounds(28, 507, 147, 16);
 		add(lblEspecialidad);
-
 		
 		JButton btnConsultas = new JButton("Consultas");
 
 		btnConsultas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PrincipalVisual.LlamarRegConsultas(contentPane, content);
-
 			}
-
 		});
 		btnConsultas.setBounds(167, 501, 120, 32);
 		add(btnConsultas);
@@ -246,15 +245,10 @@ public class RegPacientes extends JPanel {
 		JButton btnAdministrar = new JButton("Administrar");
 
 		btnAdministrar.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent arg0) {
-
 				listVacunasPuestas ventanaVacunas = new listVacunasPuestas();
-
 				ventanaVacunas.setVisible(true);
-
 			}
-
 		});
 
 		btnAdministrar.setBounds(167, 556, 120, 32);
@@ -291,7 +285,6 @@ public class RegPacientes extends JPanel {
 		lblCedula.setBounds(28, 324, 56, 16);
 		add(lblCedula);
 		loadPaciente();
-
 	}
 
     private void limpiarCampos() {

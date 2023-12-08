@@ -7,6 +7,9 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
+
+import logico.Clinica;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
@@ -47,6 +50,7 @@ public class RegAdministradores extends JPanel {
 		txtId = new JTextField();
 		txtId.setEditable(false);
 		txtId.setBounds(165, 96, 330, 32);
+		txtId.setText("A-"+Clinica.getIdPersonas());
 		add(txtId);
 		txtId.setColumns(10);
 		
