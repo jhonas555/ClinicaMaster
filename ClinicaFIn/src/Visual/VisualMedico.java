@@ -53,10 +53,8 @@ public class VisualMedico extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VisualMedico frame = new VisualMedico();
-					frame.setVisible(true);
-				//	IniciarSesion frame = new IniciarSesion();			Sirve para que muestre el inicio de sesión siempre de primero
-				//    frame.setVisible(true);
+					IniciarSesion frame = new IniciarSesion();
+				    frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
