@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 
@@ -20,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import logico.Persona;
+import logico.Vivienda;
 
 public class RegViviendas extends JPanel {
 	private JTextField txtId;
@@ -105,15 +108,28 @@ public class RegViviendas extends JPanel {
 		JButton btnAdministrar = new JButton("Administrar");
 		btnAdministrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<Persona> personas = new ArrayList<Persona>();
-				personas = Clinica.getInstance().getLasPersonas();
-				
-				
-				listViviendaPersonas ventanaViviendaPersonas = new listViviendaPersonas(txtId.getText(), txtNombre.getText());
+				listViviendaPersonas ventanaViviendaPersonas = new listViviendaPersonas(txtId.getText(), txtNombre.getText(), listaDoctor, listaPaciente);
 				ventanaViviendaPersonas.setVisible(true);
+				ventanaViviendaPersonas.setModal(true);
+				
+				
+				//Vivienda vivienda = new Vivienda(txtId.getText(), txtNombre.getText(), listaDoctor, listaPaciente);
+				//JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
+				//clean();
+				//Clinica.getInstance().agregarVivienda(vivienda);
 			}
+
+			
 		});
 		btnAdministrar.setBounds(165, 205, 120, 32);
 		add(btnAdministrar);
+	}
+	
+	private void clean() {
+		txtId.setText("");
+		txtNombre.setText("");
+		listaDoctor.clear();
+		listaPaciente.clear();
+		
 	}
 }

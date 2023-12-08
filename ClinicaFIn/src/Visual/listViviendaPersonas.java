@@ -42,7 +42,7 @@ public class listViviendaPersonas extends JDialog {
 	private static ArrayList<Doctor> listaDoctor = Clinica.getInstance().getDoctores();
 	private static ArrayList<Paciente> listaPaciente = Clinica.getInstance().getPaciente();
 	private static ArrayList<Doctor> listaViveDoctor = new ArrayList<Doctor>();
-	private static ArrayList<Paciente> listaViveciente = new ArrayList<Paciente>();
+	private static ArrayList<Paciente> listaVivePaciente = new ArrayList<Paciente>();
 	private static DefaultTableModel modelPersona;
 	private static DefaultTableModel modelVivePersona;
 	private static Object[] rowPersona;
@@ -68,7 +68,7 @@ public class listViviendaPersonas extends JDialog {
 		
 		
 		try {
-			listViviendaPersonas dialog = new listViviendaPersonas(IdVivienda, NombreVivienda);
+			listViviendaPersonas dialog = new listViviendaPersonas(IdVivienda, NombreVivienda, listaDoctor, listaPaciente);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -81,8 +81,10 @@ public class listViviendaPersonas extends JDialog {
 	 * @param personas 
 	 * @param string 
 	 * @param string2 
+	 * @param listaPaciente2 
+	 * @param listaDoctor2 
 	 */
-	public listViviendaPersonas(String string, String string2) {
+	public listViviendaPersonas(String string, String string2, ArrayList<Doctor> listaDoctorReferencia, ArrayList<Paciente> listaPacienteReferencia) {
 		setResizable(false);
 		setLocationRelativeTo(null); 
 		setBounds(650, 200, 713, 325);
@@ -113,7 +115,7 @@ public class listViviendaPersonas extends JDialog {
 					tblPersonas = new JTable();
 					
 					tblPersonas.addMouseListener(new MouseAdapter() {
-						public void mouseClicked(MouseEvent e) {
+						public void mousePressed(MouseEvent e) {
 							int index = tblPersonas.getSelectedRow();
 							Object idObject = tblPersonas.getValueAt(index, 0);
 							String id = String.valueOf(idObject);
@@ -155,7 +157,7 @@ public class listViviendaPersonas extends JDialog {
 				modelVivePersona = new DefaultTableModel();
 				modelVivePersona.setColumnIdentifiers(headerVivePersona);
 				tblVivePersona.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
+					public void mousePressed(MouseEvent e) {
 						int index = tblVivePersona.getSelectedRow();
 						Object idObject = tblVivePersona.getValueAt(index, 0);
 						String id = String.valueOf(idObject);
@@ -190,7 +192,7 @@ public class listViviendaPersonas extends JDialog {
 						if (tipodePersona.equalsIgnoreCase("Doctor")) {
 							listaViveDoctor.remove(DoctorSeleccionado);
 						} else if (tipodePersona.equalsIgnoreCase("Paciente")) {
-							listaViveciente.remove(PacienteSeleccionado);
+							listaVivePaciente.remove(PacienteSeleccionado);
 						}
 
 						
@@ -212,7 +214,7 @@ public class listViviendaPersonas extends JDialog {
 						if (tipodePersona.equalsIgnoreCase("Doctor")) {
 							listaViveDoctor.add(DoctorSeleccionado);
 						} else if (tipodePersona.equalsIgnoreCase("Paciente")) {
-							listaViveciente.add(PacienteSeleccionado);
+							listaVivePaciente.add(PacienteSeleccionado);
 						}
 						
 						
@@ -242,7 +244,10 @@ public class listViviendaPersonas extends JDialog {
 				btnListo = new JButton("Listo");
 				btnListo.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						listaDoctorReferencia.addAll(listaViveDoctor);
+						listaPacienteReferencia.addAll(listaVivePaciente);
 						dispose();
+						
 					}
 				});
 				btnListo.setEnabled(false);
@@ -291,7 +296,7 @@ public class listViviendaPersonas extends JDialog {
 
 	    // Printing persons from listaPaciente excluding those in listaViveciente
 	    for (Persona persona : listaPaciente) {
-	        if (!isPersonInList(persona, listaViveciente)) {
+	        if (!isPersonInList(persona, listaVivePaciente)) {
 	            rowPersona[0] = persona.getId();
 	            rowPersona[1] = persona.getNombre();
 	            rowPersona[2] = "Paciente";
@@ -313,12 +318,14 @@ public class listViviendaPersonas extends JDialog {
 		for (Persona persona : listaViveDoctor) {
 			rowVivePersona[0] = persona.getId();
 			rowVivePersona[1] = persona.getNombre();
+			rowVivePersona[2] = "Doctor";
 			modelVivePersona.addRow(rowVivePersona);
 		}
 		
-		for (Persona persona : listaViveciente) {
+		for (Persona persona : listaVivePaciente) {
 			rowVivePersona[0] = persona.getId();
 			rowVivePersona[1] = persona.getNombre();
+			rowVivePersona[2] = "Paciente";
 			modelVivePersona.addRow(rowVivePersona);
 		}
 	}

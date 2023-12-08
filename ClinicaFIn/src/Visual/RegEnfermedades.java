@@ -169,7 +169,7 @@ public class RegEnfermedades extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				Enfermedad enfermedad = new Enfermedad(txtId.getText(), txtNombre.getText(), txtDescripcion.getText());
 				Clinica.getInstance().actualizarEnfermedad(enfermedad.getId(), enfermedad);
-				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Modificacion", JOptionPane.INFORMATION_MESSAGE);
 				clean();
 				loadEnfermedades();
 				
@@ -183,6 +183,7 @@ public class RegEnfermedades extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				Enfermedad enfermedad = new Enfermedad(txtId.getText(), txtNombre.getText(), txtDescripcion.getText());
 				Clinica.getInstance().eliminarEnfermedad(enfermedad.getId());
+				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Eliminacion", JOptionPane.INFORMATION_MESSAGE);
 				clean();
 				loadEnfermedades();
 				
