@@ -82,13 +82,13 @@ public class RegVacunas extends JPanel {
 		lblId.setBounds(28, 103, 135, 16);
 		add(lblId);
 		
-		JButton button_1 = new JButton("Cita Nueva");
-		button_1.addActionListener(new ActionListener() {
+		JButton btnVacunaNueva = new JButton("Vacuna Nueva");
+		btnVacunaNueva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		button_1.setBounds(504, 573, 120, 32);
-		add(button_1);
+		btnVacunaNueva.setBounds(504, 573, 120, 32);
+		add(btnVacunaNueva);
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);

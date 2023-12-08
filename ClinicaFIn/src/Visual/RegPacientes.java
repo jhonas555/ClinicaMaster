@@ -197,13 +197,13 @@ public class RegPacientes extends JPanel {
         lblId.setBounds(28, 103, 135, 16);
         add(lblId);
 
-        JButton button_1 = new JButton("Cita Nueva");
-        button_1.addActionListener(new ActionListener() {
+        JButton btnPacienteNuevo = new JButton("Paciente Nuevo");
+        btnPacienteNuevo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             }
         });
-        button_1.setBounds(504, 617, 120, 32);
-        add(button_1);
+        btnPacienteNuevo.setBounds(504, 617, 120, 32);
+        add(btnPacienteNuevo);
 
         txtNombre = new JTextField();
         txtNombre.setColumns(10);
