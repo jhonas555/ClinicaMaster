@@ -571,6 +571,15 @@ public void actualizarConsulta(String id, Consulta nuevoConsulta) {
 	        e.printStackTrace();
 	    }
 	}
+	
+	public Vacuna buscarVacunaPorNumeroLote(String numeroLote) {
+	    for (Vacuna vacuna : lasVacunas) {
+	        if (vacuna.getNumeroLote().equalsIgnoreCase(numeroLote)) {
+	            return vacuna;
+	        }
+	    }
+	    return null;
+	}
 			
 	public void agregarCita(Cita cita) {
 	    cita.setId(String.valueOf(idCitas++));
