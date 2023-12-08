@@ -56,7 +56,7 @@ public class PrincipalVisual extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PrincipalVisual frame = new PrincipalVisual();
+					IniciarSesion frame = new IniciarSesion();
 				    frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
