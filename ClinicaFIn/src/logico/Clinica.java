@@ -24,6 +24,7 @@ public class Clinica implements Serializable{
     private ArrayList<Enfermedad> lasEnfermedades;
     private ArrayList<Persona> lasPersonas;
     private ArrayList<Paciente> losPacientes;
+    private ArrayList<Consulta> lasConsultas;
     private ArrayList<User> losUsuarios;
     private static int idVacunas = 1;
     private static int idViviendas = 1;
@@ -32,6 +33,7 @@ public class Clinica implements Serializable{
     private static int idPersonas = 1;
     private static int idDoctores = 1;
     private static int idPacientes = 1;
+    private static int idConsultas = 1;
     private static Clinica clinica;
 	private static User loginUser;
 
@@ -44,6 +46,7 @@ public class Clinica implements Serializable{
         this.lasEnfermedades = new ArrayList<>();
         this.lasPersonas = new ArrayList<>();
         this.losPacientes = new ArrayList<>();
+        this.lasConsultas = new ArrayList<>();
 		this.losUsuarios = new ArrayList<User>();
     }
 
@@ -65,6 +68,13 @@ public class Clinica implements Serializable{
 	}
 	public void setDoctores(ArrayList<Doctor> losDoctores) {
 		this.losDoctores = losDoctores;
+	}
+
+	public ArrayList<Consulta> getConsultas(){
+		return lasConsultas;
+	}
+	public void setConsultas(ArrayList<Consulta> lasConsultas) {
+		this.lasConsultas = lasConsultas;
 	}
 	
 	public ArrayList<Paciente> getPaciente(){
@@ -175,6 +185,72 @@ public User getUsuarioporUsuario(String string) {
 		}
 		return temp;
 	}
+
+
+public void agregarConsulta(Consulta consulta) {
+    consulta.setId(String.valueOf(idConsultas++));
+    lasConsultas.add(consulta);
+    guardarConsultasEnArchivo();
+}
+
+public Consulta buscarConsultaPorId(String id) {
+    for (Consulta consulta : lasConsultas) {
+        if (consulta.getId().equalsIgnoreCase(id)) {
+            return consulta;
+        }
+    }
+    return null;
+}
+
+public void eliminarConsultas(String id) {
+    lasConsultas.removeIf(consulta -> consulta.getId().equals(id));
+    guardarConsultasEnArchivo();
+}
+
+private static void guardarConsultasEnArchivo() {
+    try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("lasConsultas.dat"))) {
+        oos.writeObject(clinica.lasConsultas);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+private static void cargarConsultaDesdeArchivo() {
+    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("lasConsultas.dat"))) {
+        ArrayList<Consulta> loadedConsultas = (ArrayList<Consulta>) ois.readObject();
+        if (loadedConsultas != null && !loadedConsultas.isEmpty()) {
+            clinica.lasConsultas = loadedConsultas;
+
+            int maxId = loadedConsultas.stream()
+                    .map(consulta -> extractId(consulta.getId()))
+                    .max(Integer::compare)
+                    .orElse(0);
+
+            idConsultas = maxId + 1;
+        } else {
+            clinica.lasConsultas = new ArrayList<>();
+        }
+    } catch (FileNotFoundException fileNotFoundException) {
+        clinica.lasConsultas = new ArrayList<>();
+    } catch (EOFException e) {
+    } catch (IOException | ClassNotFoundException e) {
+        e.printStackTrace();
+    }
+}
+
+public void actualizarConsulta(String id, Consulta nuevoConsulta) {
+    for (Consulta consulta : lasConsultas) {
+        if (consulta.getId().equals(id)) {
+        	consulta.setFecha(nuevoConsulta.getFecha());
+        	consulta.setDiagnostico(nuevoConsulta.getDiagnostico());;
+        	consulta.setMotivo(nuevoConsulta.getMotivo());
+        	consulta.setLasEnfermedades(nuevoConsulta.getLasEnfermedades());
+
+            break;
+        }
+    }
+    guardarConsultasEnArchivo();
+}
 
 	
     public void agregarPacientes(Paciente paciente) {

@@ -5,20 +5,33 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
+import javax.swing.table.DefaultTableModel;
+
+import logico.Clinica;
+import logico.Consulta;
+import logico.Doctor;
+import logico.Enfermedad;
 
 public class RegConsultas extends JPanel {
 	private JTextField txtId;
 	private JTable table;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField textDiagnos;
+	private JTextField textFecha;
+	private JTextPane textMotivo;
+	
+	private DefaultTableModel model;
+	private Object row[];
 
 	/**
 	 * Create the panel.
@@ -57,6 +70,21 @@ public class RegConsultas extends JPanel {
 		JButton btnNewButton = new JButton("Agregar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				ArrayList<Enfermedad> enf = new ArrayList<>();
+            	Consulta consultas = new Consulta(
+            			txtId.getText(), 
+            			textFecha.getText(),
+            			textDiagnos.getText(),
+            			textMotivo.getText(),
+            			enf
+            			);
+            	Clinica.getInstance().agregarConsulta(consultas);
+            	
+                
+                JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
+                clean();
+                loadConsulta();
+                
 			}
 		});
 		btnNewButton.setBounds(900, 559, 120, 32);
@@ -79,10 +107,10 @@ public class RegConsultas extends JPanel {
 		lblFecha.setBounds(28, 157, 56, 16);
 		add(lblFecha);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(165, 205, 330, 32);
-		add(textField);
+		textDiagnos = new JTextField();
+		textDiagnos.setColumns(10);
+		textDiagnos.setBounds(165, 205, 330, 32);
+		add(textDiagnos);
 		
 		JLabel lblId = new JLabel("ID");
 		lblId.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -102,10 +130,10 @@ public class RegConsultas extends JPanel {
 		button_1.setBounds(504, 559, 120, 32);
 		add(button_1);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(165, 150, 330, 32);
-		add(textField_1);
+		textFecha = new JTextField();
+		textFecha.setColumns(10);
+		textFecha.setBounds(165, 150, 330, 32);
+		add(textFecha);
 		
 		JLabel lblFechaNacimiento = new JLabel("Motivo");
 		lblFechaNacimiento.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -116,8 +144,25 @@ public class RegConsultas extends JPanel {
 		btnAdministrar.setBounds(165, 260, 120, 32);
 		add(btnAdministrar);
 		
-		JTextPane textPane = new JTextPane();
-		textPane.setBounds(658, 96, 330, 196);
-		add(textPane);
+		JTextPane textMotivo = new JTextPane();
+		textMotivo.setBounds(658, 96, 330, 196);
+		add(textMotivo);
+	}
+	
+	private void clean() {
+		txtId.setText(""+Clinica.getIdEnfermedades());
+		//txtNombre.setText("");
+		//txtDescripcion.setText("");		
+	}
+		
+	private void loadConsulta() {
+		model.setRowCount(0);
+		row = new Object[model.getColumnCount()];
+		
+		for (Consulta consulta : Clinica.getInstance().getConsultas()) {
+			//row[0] = enfermedad.getId();
+			//row[1] = enfermedad.getNombre();
+			model.addRow(row);
+		}		
 	}
 }
