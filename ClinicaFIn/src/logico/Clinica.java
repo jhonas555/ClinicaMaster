@@ -617,7 +617,7 @@ public void actualizarConsulta(String id, Consulta nuevoConsulta) {
 	}
 	
 	public static void cargarViviendasDesdeArchivo() {
-	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("vacunas.dat"))) {
+	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("viviendas.dat"))) {
 	        ArrayList<Vivienda> loadedVivienda = (ArrayList<Vivienda>) ois.readObject();
 	        if (loadedVivienda != null && !loadedVivienda.isEmpty()) {
 	            clinica.lasViviendas = loadedVivienda;
