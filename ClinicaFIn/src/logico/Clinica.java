@@ -452,6 +452,15 @@ public User getUsuarioporUsuario(String string) {
 	    guardarCitasEnArchivo();
 	}
 	
+	public Cita buscarCitaPorId(String id) {
+        for (Cita cita : lasCitas) {
+            if (cita.getId().equalsIgnoreCase(id)) {
+                return cita;
+            }
+        }
+        return null;
+    }
+	
 	private void guardarCitasEnArchivo() {
 	    try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("citas.dat"))) {
 	        oos.writeObject(lasCitas);

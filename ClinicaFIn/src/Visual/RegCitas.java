@@ -73,11 +73,7 @@ public class RegCitas extends JPanel {
 		
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
+		
 		scrollPane.setViewportView(table);
 		
 		JButton btnNewButton = new JButton("Agregar");
@@ -191,6 +187,34 @@ public class RegCitas extends JPanel {
 		});
 		button_1.setBounds(504, 525, 120, 32);
 		add(button_1);
+		
+		
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int index = table.getSelectedRow();
+				
+				if (index >= 0) {
+					btnNewButton.setEnabled(false);
+					btnModificar.setEnabled(true);
+					btnEliminar.setEnabled(true);
+				}
+				
+				Object idObject = table.getValueAt(index, 0);
+				String id = String.valueOf(idObject);
+				
+				Cita citaselec = Clinica.getInstance().buscarCitaPorId(id);
+				if (citaselec != null) {
+					txtId.setText(String.valueOf(citaselec.getId()));
+					txtFecha.setText(citaselec.getFecha().toString());
+					txtDoctor.setText(citaselec.getDoctor().getNombre());		
+					txtPaciente.setText(citaselec.getPaciente().getNombre());	
+				}			
+				
+			}
+		});
+		
+		
 	}
 	
 	public static Date validateAndConvertToDate(String inputDate) throws ParseException {
