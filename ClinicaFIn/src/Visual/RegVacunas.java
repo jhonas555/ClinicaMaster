@@ -5,8 +5,19 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import logico.Cita;
+import logico.Clinica;
+import logico.Doctor;
+import logico.Enfermedad;
+import logico.Paciente;
+import logico.Vacuna;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
@@ -16,9 +27,17 @@ import java.awt.event.ActionEvent;
 public class RegVacunas extends JPanel {
 	private JTextField txtNumLote;
 	private JTable table;
-	private JTextField textField_1;
-	private JTextField textField;
+	private JTextField txtNombre;
+	private JTextField txtFabricante;
+	private JTextField txtEnfermedad;
+	
+	final static Enfermedad[] enfermedadHolder = {null};
+	private Enfermedad enfermedadSelec = null;
 
+	
+	private DefaultTableModel model;
+	private Object row[];
+	private Enfermedad citaselec = null;
 	/**
 	 * Create the panel.
 	 */
@@ -55,22 +74,31 @@ public class RegVacunas extends JPanel {
 		JButton btnNewButton = new JButton("Agregar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				Vacuna vacuna = new Vacuna(txtNumLote.getText(), txtNombre.getText(), txtFabricante.getText(), enfermedadSelec);
+				Clinica.getInstance().agregarVacuna(vacuna);
+				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
+				clean();
+				loadVacunas();
 			}
+
+			
 		});
 		btnNewButton.setBounds(900, 573, 120, 32);
 		add(btnNewButton);
 		
-		JButton btnModificar = new JButton("Guardar");
+		JButton btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		btnModificar.setBounds(768, 573, 120, 32);
 		add(btnModificar);
+		btnModificar.setEnabled(false);
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.setBounds(636, 573, 120, 32);
 		add(btnEliminar);
+		btnEliminar.setEnabled(false);
 		
 		JLabel lblFecha = new JLabel("Nombre");
 		lblFecha.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -90,29 +118,45 @@ public class RegVacunas extends JPanel {
 		btnVacunaNueva.setBounds(504, 573, 120, 32);
 		add(btnVacunaNueva);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(165, 150, 330, 32);
-		add(textField_1);
+		txtNombre = new JTextField();
+		txtNombre.setColumns(10);
+		txtNombre.setBounds(165, 150, 330, 32);
+		add(txtNombre);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(165, 205, 330, 32);
-		add(textField);
+		txtFabricante = new JTextField();
+		txtFabricante.setColumns(10);
+		txtFabricante.setBounds(165, 205, 330, 32);
+		add(txtFabricante);
 		
-		JLabel lblEnfermedades = new JLabel("Enfermedades");
+		JLabel lblEnfermedades = new JLabel("Enfermedad");
 		lblEnfermedades.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblEnfermedades.setBounds(28, 267, 99, 16);
 		add(lblEnfermedades);
 		
-		JButton btnAdministrar = new JButton("Administrar");
-		btnAdministrar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				listEnfermedadesTratadas ventanaEnfermedades = new listEnfermedadesTratadas();
-                ventanaEnfermedades.setVisible(true);
-			}
-		});
-		btnAdministrar.setBounds(165, 260, 120, 32);
-		add(btnAdministrar);
+		txtEnfermedad = new JTextField();
+		txtEnfermedad.setColumns(10);
+		txtEnfermedad.setBounds(165, 260, 330, 32);
+		add(txtEnfermedad);
 	}
+	
+	
+	private void clean() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	private void loadVacunas() {
+		model.setRowCount(0);
+		row = new Object[model.getColumnCount()];
+		
+		for (Vacuna vacuna : Clinica.getInstance().getLasVacunas()) {
+			row[0] = vacuna.getNumeroLote();
+			row[1] = vacuna.getNombre();
+			row[2] = vacuna.getFabricante();
+			row[3] = vacuna.getEnfermedad().getNombre();
+			model.addRow(row);
+		}		
+	}	
+	
 }

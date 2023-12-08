@@ -470,7 +470,7 @@ public void actualizarConsulta(String id, Consulta nuevoConsulta) {
 	        if (vacuna.getNumeroLote().equalsIgnoreCase(numeroLote)) {
 	        	vacuna.setNombre(nuevaVacuna.getNombre());
 	        	vacuna.setFabricante(nuevaVacuna.getFabricante());
-	        	vacuna.setLasEnfermedades(nuevaVacuna.getLasEnfermedades());
+	        	vacuna.setEnfermedad(nuevaVacuna.getEnfermedad());
 	            break;
 	        }
 	    }
