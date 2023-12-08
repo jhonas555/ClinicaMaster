@@ -85,10 +85,12 @@ public class listViviendaPersonas extends JDialog {
 	 * @param listaDoctor2 
 	 */
 	public listViviendaPersonas(String string, String string2, ArrayList<Doctor> listaDoctorReferencia, ArrayList<Paciente> listaPacienteReferencia) {
-
+		ArrayList<Doctor> antiguaListaDoctores = listaDoctorReferencia;
+		ArrayList<Paciente> antiguaListaPacientes = listaPacienteReferencia;
+		
 		setResizable(false);
 		setLocationRelativeTo(null); 
-		setBounds(650, 200, 713, 325);
+		setBounds(650, 200, 763, 446);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -96,13 +98,13 @@ public class listViviendaPersonas extends JDialog {
 		{
 			JPanel panelListado = new JPanel();
 			panelListado.setBorder(new TitledBorder(null, "Administrar Personas en la Vivienda", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panelListado.setBounds(10, 11, 675, 240);
+			panelListado.setBounds(10, 11, 735, 347);
 			contentPanel.add(panelListado);
 			panelListado.setLayout(null);
 			{
 				JPanel panelPersonas = new JPanel();
 				panelPersonas.setBorder(new TitledBorder(null, "Lista de Personas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-				panelPersonas.setBounds(10, 23, 298, 176);
+				panelPersonas.setBounds(10, 23, 298, 311);
 				panelListado.add(panelPersonas);
 				panelPersonas.setLayout(new BorderLayout(0, 0));
 				{
@@ -145,7 +147,7 @@ public class listViviendaPersonas extends JDialog {
 			{
 				JPanel panelVivePersonas = new JPanel();
 				panelVivePersonas.setBorder(new TitledBorder(null, "Pertenecen a esta vivienda", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-				panelVivePersonas.setBounds(367, 23, 298, 176);
+				panelVivePersonas.setBounds(405, 23, 298, 311);
 				panelListado.add(panelVivePersonas);
 				panelVivePersonas.setLayout(new BorderLayout(0, 0));
 				
@@ -202,7 +204,7 @@ public class listViviendaPersonas extends JDialog {
 						
 						imprimirVivePersona(listaDoctorReferencia,listaPacienteReferencia);
 						imprimirPersonas(listaDoctorReferencia,listaPacienteReferencia);
-						habilitarBotonListo();
+						//habilitarBotonListo();
 						
 					}
 				});
@@ -222,18 +224,18 @@ public class listViviendaPersonas extends JDialog {
 						
 						imprimirVivePersona(listaDoctorReferencia,listaPacienteReferencia);
 						imprimirPersonas(listaDoctorReferencia,listaPacienteReferencia);
-						habilitarBotonListo();
+						//habilitarBotonListo();
 					}
 				});
 				btnPasar.setEnabled(false);
-				btnPasar.setBounds(304, 69, 58, 36);
+				btnPasar.setBounds(335, 130, 58, 36);
 				panelListado.add(btnPasar);
 			}
 			
 			
 			
 			btnDevolver.setEnabled(false);
-			btnDevolver.setBounds(304, 131, 58, 36);
+			btnDevolver.setBounds(335, 220, 58, 36);
 			panelListado.add(btnDevolver);
 		}
 		{
@@ -247,24 +249,27 @@ public class listViviendaPersonas extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						
 						//listaPacienteReferencia.addAll(listaVivePaciente);
+						
+						
 						dispose();
 						
 					}
 				});
-				btnListo.setEnabled(false);
+				btnListo.setEnabled(true);
 				btnListo.setActionCommand("OK");
 				buttonPane.add(btnListo);
 				getRootPane().setDefaultButton(btnListo);
 			}
 			{
-				JButton cancelButton = new JButton("Cancelar");
+				
+				/*JButton cancelButton = new JButton("Cancelar");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
+				buttonPane.add(cancelButton);*/
 			}
 		}
 		imprimirVivePersona(listaDoctorReferencia,listaPacienteReferencia);

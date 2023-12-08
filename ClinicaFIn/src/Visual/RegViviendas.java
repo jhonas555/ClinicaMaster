@@ -81,8 +81,6 @@ public class RegViviendas extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Vivienda vivienda = new Vivienda(txtId.getText(), txtNombre.getText(), listaDoctor, listaPaciente);
-				System.out.println("Lista de Doctores:");
-		        
 				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
 				
 				Clinica.getInstance().agregarVivienda(vivienda);

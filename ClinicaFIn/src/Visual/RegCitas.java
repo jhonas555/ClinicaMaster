@@ -94,6 +94,11 @@ public class RegCitas extends JPanel {
 		add(lblId);
 		
 		JButton btnSeleccionar = new JButton("Seleccionar");
+		btnSeleccionar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		btnSeleccionar.setBounds(165, 205, 120, 32);
 		add(btnSeleccionar);
 		
