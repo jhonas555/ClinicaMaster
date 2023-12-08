@@ -41,8 +41,8 @@ public class listViviendaPersonas extends JDialog {
 	private static String NombreVivienda;
 	private static ArrayList<Doctor> listaDoctor = Clinica.getInstance().getDoctores();
 	private static ArrayList<Paciente> listaPaciente = Clinica.getInstance().getPaciente();
-	private static ArrayList<Doctor> listaViveDoctor = new ArrayList<Doctor>();
-	private static ArrayList<Paciente> listaVivePaciente = new ArrayList<Paciente>();
+	//private static ArrayList<Doctor> listaViveDoctor = new ArrayList<Doctor>();
+	//private static ArrayList<Paciente> listaVivePaciente = new ArrayList<Paciente>();
 	private static DefaultTableModel modelPersona;
 	private static DefaultTableModel modelVivePersona;
 	private static Object[] rowPersona;
@@ -85,6 +85,7 @@ public class listViviendaPersonas extends JDialog {
 	 * @param listaDoctor2 
 	 */
 	public listViviendaPersonas(String string, String string2, ArrayList<Doctor> listaDoctorReferencia, ArrayList<Paciente> listaPacienteReferencia) {
+
 		setResizable(false);
 		setLocationRelativeTo(null); 
 		setBounds(650, 200, 713, 325);
@@ -190,17 +191,17 @@ public class listViviendaPersonas extends JDialog {
 						
 
 						if (tipodePersona.equalsIgnoreCase("Doctor")) {
-							listaViveDoctor.remove(DoctorSeleccionado);
+							listaDoctorReferencia.remove(DoctorSeleccionado);
 						} else if (tipodePersona.equalsIgnoreCase("Paciente")) {
-							listaVivePaciente.remove(PacienteSeleccionado);
+							listaPacienteReferencia.remove(PacienteSeleccionado);
 						}
 
 						
 						
 						
 						
-						imprimirVivePersona();
-						imprimirPersonas();
+						imprimirVivePersona(listaDoctorReferencia,listaPacienteReferencia);
+						imprimirPersonas(listaDoctorReferencia,listaPacienteReferencia);
 						habilitarBotonListo();
 						
 					}
@@ -212,15 +213,15 @@ public class listViviendaPersonas extends JDialog {
 						
 
 						if (tipodePersona.equalsIgnoreCase("Doctor")) {
-							listaViveDoctor.add(DoctorSeleccionado);
+							listaDoctorReferencia.add(DoctorSeleccionado);
 						} else if (tipodePersona.equalsIgnoreCase("Paciente")) {
-							listaVivePaciente.add(PacienteSeleccionado);
+							listaPacienteReferencia.add(PacienteSeleccionado);
 						}
 						
 						
 						
-						imprimirVivePersona();
-						imprimirPersonas();
+						imprimirVivePersona(listaDoctorReferencia,listaPacienteReferencia);
+						imprimirPersonas(listaDoctorReferencia,listaPacienteReferencia);
 						habilitarBotonListo();
 					}
 				});
@@ -244,8 +245,8 @@ public class listViviendaPersonas extends JDialog {
 				btnListo = new JButton("Listo");
 				btnListo.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						listaDoctorReferencia.addAll(listaViveDoctor);
-						listaPacienteReferencia.addAll(listaVivePaciente);
+						
+						//listaPacienteReferencia.addAll(listaVivePaciente);
 						dispose();
 						
 					}
@@ -266,8 +267,8 @@ public class listViviendaPersonas extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
-		imprimirVivePersona();
-		imprimirPersonas();
+		imprimirVivePersona(listaDoctorReferencia,listaPacienteReferencia);
+		imprimirPersonas(listaDoctorReferencia,listaPacienteReferencia);
 	}
 
 
@@ -280,13 +281,13 @@ public class listViviendaPersonas extends JDialog {
 		btnListo.setEnabled(false);
 	}
 	
-	public static void imprimirPersonas() {
+	public static void imprimirPersonas(ArrayList<Doctor> listaDoctorReferencia, ArrayList<Paciente> listaPacienteReferencia) {
 	    modelPersona.setRowCount(0);
 	    rowPersona = new Object[modelPersona.getColumnCount()];
 
 	    // Printing persons from listaDoctor excluding those in listaViveDoctor
 	    for (Persona persona : listaDoctor) {
-	        if (!isPersonInList(persona, listaViveDoctor)) {
+	        if (!isPersonInList(persona, listaDoctorReferencia)) {
 	            rowPersona[0] = persona.getId();
 	            rowPersona[1] = persona.getNombre();
 	            rowPersona[2] = "Doctor";
@@ -296,7 +297,7 @@ public class listViviendaPersonas extends JDialog {
 
 	    // Printing persons from listaPaciente excluding those in listaViveciente
 	    for (Persona persona : listaPaciente) {
-	        if (!isPersonInList(persona, listaVivePaciente)) {
+	        if (!isPersonInList(persona, listaPacienteReferencia)) {
 	            rowPersona[0] = persona.getId();
 	            rowPersona[1] = persona.getNombre();
 	            rowPersona[2] = "Paciente";
@@ -310,19 +311,19 @@ public class listViviendaPersonas extends JDialog {
 	    return exclusionList.contains(persona);
 	}
 	
-	public static void imprimirVivePersona()
+	public static void imprimirVivePersona(ArrayList<Doctor> listaDoctorReferencia, ArrayList<Paciente> listaPacienteReferencia)
 	{
 		modelVivePersona.setRowCount(0);
 		rowVivePersona = new Object[modelVivePersona.getColumnCount()];
 		
-		for (Persona persona : listaViveDoctor) {
+		for (Persona persona : listaDoctorReferencia) {
 			rowVivePersona[0] = persona.getId();
 			rowVivePersona[1] = persona.getNombre();
 			rowVivePersona[2] = "Doctor";
 			modelVivePersona.addRow(rowVivePersona);
 		}
 		
-		for (Persona persona : listaVivePaciente) {
+		for (Persona persona : listaPacienteReferencia) {
 			rowVivePersona[0] = persona.getId();
 			rowVivePersona[1] = persona.getNombre();
 			rowVivePersona[2] = "Paciente";

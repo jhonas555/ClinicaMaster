@@ -10,8 +10,8 @@ public class Vivienda implements Serializable {
 		super();
 		this.id = id;
 		this.nombre = nombre;
-		this.losDoctores = losDoctores;
-		this.losPacientes = losPacientes;
+	    this.losDoctores = new ArrayList<>(losDoctores);
+	    this.losPacientes = new ArrayList<>(losPacientes);
 	}
 	private static final long serialVersionUID = 7998444807365673173L;
 	

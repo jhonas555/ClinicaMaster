@@ -472,6 +472,7 @@ public class Clinica implements Serializable{
 	public void agregarVivienda(Vivienda vivienda) {
 	    vivienda.setId(String.valueOf(idViviendas++));
 	    lasViviendas.add(vivienda);
+	    
 	    guardarViviendasEnArchivo();
 	}
 	
@@ -498,6 +499,15 @@ public class Clinica implements Serializable{
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
+	}
+	
+	public Vivienda buscarViviendaPorId(String id) {
+	    for (Vivienda vivienda : lasViviendas) {
+	        if (vivienda.getId().equalsIgnoreCase(id)) {
+	            return vivienda;
+	        }
+	    }
+	    return null;  // Devolver null si no se encuentra ninguna vivienda con el ID dado
 	}
 }
 
