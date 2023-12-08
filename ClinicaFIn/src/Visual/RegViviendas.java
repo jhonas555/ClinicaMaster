@@ -2,6 +2,7 @@ package Visual;
 
 import javax.swing.JPanel;
 
+
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
@@ -9,17 +10,24 @@ import java.awt.Font;
 import javax.swing.JTextField;
 
 import logico.Clinica;
+import logico.Doctor;
+import logico.Paciente;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import logico.Persona;
 
 public class RegViviendas extends JPanel {
 	private JTextField txtId;
 	private JTable table;
-	private JTextField textField;
+	private JTextField txtNombre;
+	
+	private static ArrayList<Doctor> listaDoctor = Clinica.getInstance().getDoctores();
+	private static ArrayList<Paciente> listaPaciente = Clinica.getInstance().getPaciente();
 
 	/**
 	 * Create the panel.
@@ -75,10 +83,10 @@ public class RegViviendas extends JPanel {
 		lblFecha.setBounds(28, 157, 56, 16);
 		add(lblFecha);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(165, 150, 330, 32);
-		add(textField);
+		txtNombre = new JTextField();
+		txtNombre.setColumns(10);
+		txtNombre.setBounds(165, 150, 330, 32);
+		add(txtNombre);
 		
 		JLabel lblId = new JLabel("ID");
 		lblId.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -97,7 +105,11 @@ public class RegViviendas extends JPanel {
 		JButton btnAdministrar = new JButton("Administrar");
 		btnAdministrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				listViviendaPersonas ventanaViviendaPersonas = new listViviendaPersonas();
+				ArrayList<Persona> personas = new ArrayList<Persona>();
+				personas = Clinica.getInstance().getLasPersonas();
+				
+				
+				listViviendaPersonas ventanaViviendaPersonas = new listViviendaPersonas(txtId.getText(), txtNombre.getText());
 				ventanaViviendaPersonas.setVisible(true);
 			}
 		});

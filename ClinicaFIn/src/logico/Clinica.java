@@ -484,7 +484,8 @@ public class Clinica implements Serializable{
 	    for (Vivienda vivienda : lasViviendas) {
 	        if (vivienda.getId().equalsIgnoreCase(id)) {
 	        	vivienda.setNombre(nuevaVivienda.getNombre());
-	        	vivienda.setLasPersonas(nuevaVivienda.getLasPersonas());
+	        	vivienda.setLosDoctores(nuevaVivienda.getLosDoctores());
+	        	vivienda.setLosPacientes(nuevaVivienda.getLosPacientes());
 	            break;
 	        }
 	    }
