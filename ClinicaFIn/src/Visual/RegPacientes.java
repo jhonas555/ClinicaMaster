@@ -6,10 +6,14 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
 import logico.Clinica;
@@ -19,10 +23,18 @@ import logico.Paciente;
 public class RegPacientes extends JPanel {
     private JTextField idCita;
     private JTable table;
-    private JTextField textField;
-    private JTextField textField_1;
-    private JTextField textField_5;
-    private JTextField textField_2;
+    private JTextField txtApellido;
+    private JTextField txtNombre;
+    private JTextField txtCorreo;
+    private JTextField txtNumSeg;
+    private JTextField txtCedula;
+    private JTextField txtTelefono;
+    
+	private DefaultTableModel model;
+	private Object row[];
+	private JButton btnEliminar;
+	private JButton btnModificar;
+	private Paciente pacienteselec = null;
 
     /**
      * Create the panel.
@@ -56,44 +68,117 @@ public class RegPacientes extends JPanel {
         scrollPane.setBounds(1032, 13, 860, 870);
         add(scrollPane);
 
-        table = new JTable();
+		String[] header = {"Id", "Nombre", "Cedula"};
+		model = new DefaultTableModel();
+		model.setColumnIdentifiers(header);
+		table = new JTable();
+		
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setModel(model);
         scrollPane.setViewportView(table);
 
         JButton btnNewButton = new JButton("Agregar");
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-               	Doctor doctores = new Doctor(
-            			txtId.getText(), 
-            			txtPassword.getText(), 
+               	Paciente pacientes = new Paciente(
+            			idCita.getText(), 
+            			"", 
             			txtCedula.getText(), 
             			txtNombre.getText(), 
             			txtApellido.getText(), 
             			txtTelefono.getText(), 
             			txtCorreo.getText(),
-            			txtEspecialidad.getText(),
-            			txtLicencia.getText()
+            			txtNumSeg.getText()
             			);
-            	Clinica.getInstance().agregarDoctor(doctores);
+            	Clinica.getInstance().agregarPacientes(pacientes);
             	
                 
                 JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
-                clean();
-                loadDoctores();
+                limpiarCampos();
+                loadPaciente();
             }
         });
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int index = table.getSelectedRow();
+				
+				if (index >= 0) {
+					btnNewButton.setEnabled(false);
+					btnModificar.setEnabled(true);
+					btnEliminar.setEnabled(true);
+				}
+				
+				Object idObject = table.getValueAt(index, 0);
+				String id = String.valueOf(idObject);
+				
+				pacienteselec = Clinica.getInstance().buscarPacientePorId(id);
+				if (pacienteselec != null) {
+					idCita.setText(String.valueOf(pacienteselec.getId()));
+					txtNombre.setText(pacienteselec.getNombre());
+					txtApellido.setText(pacienteselec.getApellido());
+					txtTelefono.setText(pacienteselec.getTelefono());
+					txtCedula.setText(pacienteselec.getCedula());
+					txtCorreo.setText(pacienteselec.getCorreoElectronico());
+					txtNumSeg.setText(pacienteselec.getNumeroSeguro());
+				}			
+			}
+		});
         btnNewButton.setBounds(900, 617, 120, 32);
         add(btnNewButton);
 
-        JButton btnModificar = new JButton("Guardar");
+        btnModificar = new JButton("Modificar");
+        btnModificar.setEnabled(false);
         btnModificar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+               	Paciente pacientes = new Paciente(
+            			idCita.getText(), 
+            			"", 
+            			txtCedula.getText(), 
+            			txtNombre.getText(), 
+            			txtApellido.getText(), 
+            			txtTelefono.getText(), 
+            			txtCorreo.getText(),
+            			txtNumSeg.getText()
+            			);
+				Clinica.getInstance().actualizarPaciente(pacientes.getId(), pacientes);;
+				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Modificar", JOptionPane.INFORMATION_MESSAGE);
+				limpiarCampos();
+				loadPaciente();
+				
+				btnModificar.setEnabled(false);
+				btnEliminar.setEnabled(false);
+				btnNewButton.setEnabled(true);
 
             }
         });
         btnModificar.setBounds(768, 617, 120, 32);
         add(btnModificar);
 
-        JButton btnEliminar = new JButton("Eliminar");
+        btnEliminar = new JButton("Eliminar");
+        btnEliminar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+               	Paciente pacientes = new Paciente(
+            			idCita.getText(), 
+            			"", 
+            			txtCedula.getText(), 
+            			txtNombre.getText(), 
+            			txtApellido.getText(), 
+            			txtTelefono.getText(), 
+            			txtCorreo.getText(),
+            			txtNumSeg.getText()
+            			);
+				Clinica.getInstance().eliminarPaciente(pacientes.getId());
+				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+				limpiarCampos();
+				loadPaciente();
+				
+				btnModificar.setEnabled(false);
+				btnEliminar.setEnabled(false);
+				btnNewButton.setEnabled(true);
+        	}
+        });
+        btnEliminar.setEnabled(false);
         btnEliminar.setBounds(636, 617, 120, 32);
         add(btnEliminar);
 
@@ -102,10 +187,10 @@ public class RegPacientes extends JPanel {
         lblFecha.setBounds(28, 157, 56, 16);
         add(lblFecha);
 
-        textField = new JTextField();
-        textField.setColumns(10);
-        textField.setBounds(165, 205, 330, 32);
-        add(textField);
+        txtApellido = new JTextField();
+        txtApellido.setColumns(10);
+        txtApellido.setBounds(165, 205, 330, 32);
+        add(txtApellido);
 
         JLabel lblId = new JLabel("ID");
         lblId.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -120,24 +205,24 @@ public class RegPacientes extends JPanel {
         button_1.setBounds(504, 617, 120, 32);
         add(button_1);
 
-        textField_1 = new JTextField();
-        textField_1.setColumns(10);
-        textField_1.setBounds(165, 150, 330, 32);
-        add(textField_1);
+        txtNombre = new JTextField();
+        txtNombre.setColumns(10);
+        txtNombre.setBounds(165, 150, 330, 32);
+        add(txtNombre);
 
         JLabel lblCorreoElectrnico = new JLabel("Correo Electr\u00F3nico");
         lblCorreoElectrnico.setFont(new Font("Tahoma", Font.BOLD, 14));
-        lblCorreoElectrnico.setBounds(28, 267, 147, 16);
+        lblCorreoElectrnico.setBounds(28, 386, 147, 16);
         add(lblCorreoElectrnico);
 
-        textField_5 = new JTextField();
-        textField_5.setColumns(10);
-        textField_5.setBounds(165, 260, 330, 32);
-        add(textField_5);
+        txtCorreo = new JTextField();
+        txtCorreo.setColumns(10);
+        txtCorreo.setBounds(165, 379, 330, 32);
+        add(txtCorreo);
         
 		JLabel lblEspecialidad = new JLabel("Historial Cl\u00EDnico");
 		lblEspecialidad.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblEspecialidad.setBounds(30, 389, 147, 16);
+		lblEspecialidad.setBounds(30, 508, 147, 16);
 		add(lblEspecialidad);
 
 		
@@ -150,11 +235,11 @@ public class RegPacientes extends JPanel {
 			}
 
 		});
-		btnConsultas.setBounds(167, 382, 120, 32);
+		btnConsultas.setBounds(167, 501, 120, 32);
 		add(btnConsultas);
 		JLabel lblVacunas = new JLabel("Vacunas");
 		lblVacunas.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblVacunas.setBounds(30, 444, 147, 16);
+		lblVacunas.setBounds(30, 563, 147, 16);
 		add(lblVacunas);
 
 		JButton btnAdministrar = new JButton("Administrar");
@@ -171,26 +256,61 @@ public class RegPacientes extends JPanel {
 
 		});
 
-		btnAdministrar.setBounds(167, 437, 120, 32);
+		btnAdministrar.setBounds(167, 556, 120, 32);
 
 		add(btnAdministrar);
 		
 		JLabel lblNumeroSeguro = new JLabel("Numero seguro");
 		lblNumeroSeguro.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNumeroSeguro.setBounds(28, 320, 147, 16);
+		lblNumeroSeguro.setBounds(28, 439, 147, 16);
 		add(lblNumeroSeguro);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(165, 313, 330, 32);
-		add(textField_2);
+		txtNumSeg = new JTextField();
+		txtNumSeg.setColumns(10);
+		txtNumSeg.setBounds(165, 432, 330, 32);
+		add(txtNumSeg);
+		
+		txtCedula = new JTextField();
+		txtCedula.setColumns(10);
+		txtCedula.setBounds(165, 317, 330, 32);
+		add(txtCedula);
+		
+		txtTelefono = new JTextField();
+		txtTelefono.setColumns(10);
+		txtTelefono.setBounds(165, 262, 330, 32);
+		add(txtTelefono);
+		
+		JLabel lblTelefono = new JLabel("Telefono");
+		lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblTelefono.setBounds(28, 269, 81, 16);
+		add(lblTelefono);
+		
+		JLabel lblCedula = new JLabel("Cedula");
+		lblCedula.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblCedula.setBounds(28, 324, 56, 16);
+		add(lblCedula);
+		loadPaciente();
 
 	}
 
     private void limpiarCampos() {
         idCita.setText("");
-        textField_1.setText("");
-        textField.setText("");
-        textField_5.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtCorreo.setText("");
+		txtCedula.setText("");
+		txtTelefono.setText(""); 
+		txtNumSeg.setText("");
     }
+	private void loadPaciente() {
+		model.setRowCount(0);
+		row = new Object[model.getColumnCount()];
+		
+		for (Paciente pacientes : Clinica.getInstance().getPaciente()) {
+			row[0] = pacientes.getId();
+			row[1] = pacientes.getNombre();
+			row[2] = pacientes.getCedula();
+			model.addRow(row);
+		}		
+	}
 }

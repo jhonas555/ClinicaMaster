@@ -1,7 +1,7 @@
 package logico;
 
 import java.io.EOFException;
-
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -23,12 +23,14 @@ public class Clinica implements Serializable{
     private ArrayList<Cita> lasCitas;
     private ArrayList<Enfermedad> lasEnfermedades;
     private ArrayList<Persona> lasPersonas;
+    private ArrayList<Paciente> losPacientes;
     private static int idVacunas = 1;
     private static int idViviendas = 1;
     private static int idCitas = 1;
     private static int idEnfermedades = 1;
     private static int idPersonas = 1;
     private static int idDoctores = 1;
+    private static int idPacientes = 1;
     private static Clinica clinica = null;
 
     public Clinica() {
@@ -39,12 +41,14 @@ public class Clinica implements Serializable{
         this.lasCitas = new ArrayList<>();
         this.lasEnfermedades = new ArrayList<>();
         this.lasPersonas = new ArrayList<>();
+        this.losPacientes = new ArrayList<>();
     }
 
     public static Clinica getInstance() {
         if (clinica == null) {
             clinica = new Clinica();
         }
+        cargarPacientesDesdeArchivo();
         cargarEnfermedadesDesdeArchivo();
         cargarVacunasDesdeArchivo();
         cargarCitasDesdeArchivo();
@@ -53,6 +57,52 @@ public class Clinica implements Serializable{
         return clinica;
     }
 
+
+    
+    private static void cargarPacientesDesdeArchivo() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("pacientes.dat"))) {
+            ArrayList<Paciente> loadedPaciente = (ArrayList<Paciente>) ois.readObject();
+            if (loadedPaciente != null && !loadedPaciente.isEmpty()) {
+                clinica.losPacientes = loadedPaciente;
+
+                int maxId = loadedPaciente.stream()
+                        .map(paciente -> extractId(paciente.getId()))
+                        .max(Integer::compare)
+                        .orElse(0);
+
+                idPacientes = maxId + 1;
+            } else {
+                clinica.losPacientes = new ArrayList<>();
+            }
+        } catch (FileNotFoundException fileNotFoundException) {
+            clinica.losPacientes = new ArrayList<>();
+        } catch (EOFException e) {
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private static void guardarPacientesEnArchivo() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("pacientes.dat"))) {
+            oos.writeObject(clinica.losPacientes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void actualizarPaciente(String id, Paciente nuevoPaciente) {
+        for (Paciente pacientes : losPacientes) {
+            if (pacientes.getId().equals(id)) {
+                pacientes.setNombre(nuevoPaciente.getNombre());
+                pacientes.setApellido(nuevoPaciente.getApellido());
+                pacientes.setTelefono(nuevoPaciente.getTelefono());
+                pacientes.setCorreoElectronico(nuevoPaciente.getCorreoElectronico());
+                pacientes.setCedula(nuevoPaciente.getCedula());
+                pacientes.setNumeroSeguro(nuevoPaciente.getNumeroSeguro());;
+                break;
+            }
+        }
+        guardarPacientesEnArchivo();
+    }
 
     private static void cargarDoctoresDesdeArchivo() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("losDoctores.dat"))) {
@@ -91,6 +141,16 @@ public class Clinica implements Serializable{
         losDoctores.add(doctor);
         guardarDoctoresEnArchivo();
     }
+    public void agregarPacientes(Paciente paciente) {
+        paciente.setId(String.valueOf(idPacientes++));
+        losPacientes.add(paciente);
+        guardarPacientesEnArchivo();
+    }
+    
+    public void eliminarPaciente(String id) {
+        losPacientes.removeIf(pacientes -> pacientes.getId().equals(id));
+        guardarPacientesEnArchivo();
+    }
 
     public void eliminarDoctor(String id) {
         losDoctores.removeIf(doctor -> doctor.getId().equals(id));
@@ -110,6 +170,16 @@ public class Clinica implements Serializable{
             }
         }
         guardarDoctoresEnArchivo();
+    }
+    
+
+    public Paciente buscarPacientePorId(String id) {
+        for (Paciente pacientes : losPacientes) {
+            if (pacientes.getId().equalsIgnoreCase(id)) {
+                return pacientes;
+            }
+        }
+        return null;
     }
 
     public Doctor buscarDoctorPorId(String id) {
@@ -235,6 +305,13 @@ public class Clinica implements Serializable{
 		this.losDoctores = losDoctores;
 	}
 	
+	public ArrayList<Paciente> getPaciente(){
+		return losPacientes;
+	}
+	public void setPaciente(ArrayList<Paciente> losPacientes) {
+		this.losPacientes = losPacientes;
+	}
+	
 	public ArrayList<Vacuna> getLasVacunas() {
 		return lasVacunas;
 	}
@@ -282,6 +359,9 @@ public class Clinica implements Serializable{
 	}
 	public static int getIdPersonas() {
 		return idPersonas;
+	}
+	public static int getIdPcientes() {
+		return idPacientes;
 	}
 
 
