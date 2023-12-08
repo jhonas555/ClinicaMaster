@@ -24,6 +24,7 @@ public class Clinica implements Serializable{
     private ArrayList<Enfermedad> lasEnfermedades;
     private ArrayList<Persona> lasPersonas;
     private ArrayList<Paciente> losPacientes;
+    private ArrayList<User> losUsuarios;
     private static int idVacunas = 1;
     private static int idViviendas = 1;
     private static int idCitas = 1;
@@ -31,7 +32,8 @@ public class Clinica implements Serializable{
     private static int idPersonas = 1;
     private static int idDoctores = 1;
     private static int idPacientes = 1;
-    private static Clinica clinica = null;
+    private static Clinica clinica;
+	private static User loginUser;
 
     public Clinica() {
         super();
@@ -42,6 +44,7 @@ public class Clinica implements Serializable{
         this.lasEnfermedades = new ArrayList<>();
         this.lasPersonas = new ArrayList<>();
         this.losPacientes = new ArrayList<>();
+		this.losUsuarios = new ArrayList<User>();
     }
 
     public static Clinica getInstance() {
@@ -56,69 +59,7 @@ public class Clinica implements Serializable{
         cargarDoctoresDesdeArchivo();
         return clinica;
     }
-  
-	
-	public static void cargarCitasDesdeArchivo() {
-	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("citas.dat"))) {
-	        ArrayList<Cita> loadedCitas = (ArrayList<Cita>) ois.readObject();
-	        if (loadedCitas != null && !loadedCitas.isEmpty()) {
-	            clinica.lasCitas = loadedCitas;
-
-	            int maxId = loadedCitas.stream()
-	                    .map(cita -> extractId(cita.getId()))
-	                    .max(Integer::compare)
-	                    .orElse(0);
-
-	            idCitas = maxId + 1;
-	        } else {
-	            clinica.lasCitas = new ArrayList<>();
-	        }
-	    } catch (FileNotFoundException fileNotFoundException) {
-	        clinica.lasCitas = new ArrayList<>();
-	    } catch (EOFException e) {
-	    } catch (IOException | ClassNotFoundException e) {
-	        e.printStackTrace();
-	    }
-	}
-	
-	public static void cargarViviendasDesdeArchivo() {
-	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("vacunas.dat"))) {
-	        ArrayList<Vivienda> loadedVivienda = (ArrayList<Vivienda>) ois.readObject();
-	        if (loadedVivienda != null && !loadedVivienda.isEmpty()) {
-	            clinica.lasViviendas = loadedVivienda;
-
-	            int maxId = loadedVivienda.stream()
-	                    .map(vivienda -> extractId(vivienda.getId()))
-	                    .max(Integer::compare)
-	                    .orElse(0);
-	            
-	            idVacunas = maxId + 1;
-	        } else {
-	            clinica.lasVacunas = new ArrayList<>();
-	        }
-	    } catch (FileNotFoundException fileNotFoundException) {
-	        clinica.lasVacunas = new ArrayList<>();
-	    } catch (EOFException e) {
-	    } catch (IOException | ClassNotFoundException e) {
-	        e.printStackTrace();
-	    }
-	}
-
-	private static int extractId(String id) {
-	    try {
-	        return Integer.parseInt(id);
-	    } catch (NumberFormatException e) {
-	        return 0;
-	    }
-	}
-	
-	private static int extractNumeroLote(String numeroLote) {
-	    try {
-	        return Integer.parseInt(numeroLote);
-	    } catch (NumberFormatException e) {
-	        return 0;
-	    }
-	}
+  	
 	public ArrayList<Doctor> getDoctores(){
 		return losDoctores;
 	}
@@ -132,7 +73,6 @@ public class Clinica implements Serializable{
 	public void setPaciente(ArrayList<Paciente> losPacientes) {
 		this.losPacientes = losPacientes;
 	}
-	
 	public ArrayList<Vacuna> getLasVacunas() {
 		return lasVacunas;
 	}
@@ -163,6 +103,21 @@ public class Clinica implements Serializable{
 	public void setLasPersonas(ArrayList<Persona> lasPersonas) {
 		this.lasPersonas = lasPersonas;
 	}	
+	public ArrayList<User> getlosUsuarios() {
+		return losUsuarios;
+	}
+	public void setMisUsuarios(ArrayList<User> losUsuarios) {
+		this.losUsuarios = losUsuarios;
+	}
+	public static User getLoginUser() {
+		return loginUser;
+	}
+	public static void setLoginUser(User loginUser) {
+		Clinica.loginUser = loginUser;
+	}
+	public static void setClinica(Clinica clinica) {
+		Clinica.clinica = clinica;
+	}
 	public static int getIdDoctores() {
 		return idDoctores;
 	}
@@ -183,6 +138,42 @@ public class Clinica implements Serializable{
 	}
 	public static int getIdPcientes() {
 		return idPacientes;
+	}	
+	
+	
+	public void AgregarUser(User user) {
+		losUsuarios.add(user);
+	}
+	
+	public void EliminarUser(User user) {
+		losUsuarios.remove(user);
+	}
+	
+	public boolean confirmLogin(String usuario, String password) {
+		boolean login = false;
+		for (User user : losUsuarios) {
+			if (user.getUsuario().equals(usuario) && user.getPassword().equals(password)) {
+				loginUser = user;
+				login = true;
+			}
+		}
+		return login;
+	}
+
+public User getUsuarioporUsuario(String string) {
+
+		User temp = null;
+		boolean encontrado = false;
+		int i = 0;
+
+		while (!encontrado && i < losUsuarios.size()) {
+			if (losUsuarios.get(i).getUsuario().equalsIgnoreCase(string)) {
+				temp = losUsuarios.get(i);
+				encontrado = true;
+			}
+			i++;
+		}
+		return temp;
 	}
 
 	
@@ -507,7 +498,69 @@ public class Clinica implements Serializable{
 	            return vivienda;
 	        }
 	    }
-	    return null;  // Devolver null si no se encuentra ninguna vivienda con el ID dado
+	    return null;
+	}
+	
+	public static void cargarCitasDesdeArchivo() {
+	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("citas.dat"))) {
+	        ArrayList<Cita> loadedCitas = (ArrayList<Cita>) ois.readObject();
+	        if (loadedCitas != null && !loadedCitas.isEmpty()) {
+	            clinica.lasCitas = loadedCitas;
+
+	            int maxId = loadedCitas.stream()
+	                    .map(cita -> extractId(cita.getId()))
+	                    .max(Integer::compare)
+	                    .orElse(0);
+
+	            idCitas = maxId + 1;
+	        } else {
+	            clinica.lasCitas = new ArrayList<>();
+	        }
+	    } catch (FileNotFoundException fileNotFoundException) {
+	        clinica.lasCitas = new ArrayList<>();
+	    } catch (EOFException e) {
+	    } catch (IOException | ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	public static void cargarViviendasDesdeArchivo() {
+	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("vacunas.dat"))) {
+	        ArrayList<Vivienda> loadedVivienda = (ArrayList<Vivienda>) ois.readObject();
+	        if (loadedVivienda != null && !loadedVivienda.isEmpty()) {
+	            clinica.lasViviendas = loadedVivienda;
+
+	            int maxId = loadedVivienda.stream()
+	                    .map(vivienda -> extractId(vivienda.getId()))
+	                    .max(Integer::compare)
+	                    .orElse(0);
+	            
+	            idVacunas = maxId + 1;
+	        } else {
+	            clinica.lasVacunas = new ArrayList<>();
+	        }
+	    } catch (FileNotFoundException fileNotFoundException) {
+	        clinica.lasVacunas = new ArrayList<>();
+	    } catch (EOFException e) {
+	    } catch (IOException | ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	private static int extractId(String id) {
+	    try {
+	        return Integer.parseInt(id);
+	    } catch (NumberFormatException e) {
+	        return 0;
+	    }
+	}
+	
+	private static int extractNumeroLote(String numeroLote) {
+	    try {
+	        return Integer.parseInt(numeroLote);
+	    } catch (NumberFormatException e) {
+	        return 0;
+	    }
 	}
 }
 

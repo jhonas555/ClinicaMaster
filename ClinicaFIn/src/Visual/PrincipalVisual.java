@@ -21,6 +21,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -64,7 +70,23 @@ public class PrincipalVisual extends JFrame {
 	 */
 	public PrincipalVisual() {
 		
-		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				FileOutputStream clinica2;
+				ObjectOutputStream clinicaWrite;
+				try {
+					clinica2 = new FileOutputStream("clinica.dat");
+					clinicaWrite = new ObjectOutputStream(clinica2);
+					clinicaWrite.writeObject(Clinica.getInstance());
+				} catch (FileNotFoundException e1) {
+
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+
+			}
+		});
 		setTitle("ClinicaJDC");
 		setResizable(false);
 		Dimension dim = getToolkit().getScreenSize();
@@ -252,16 +274,16 @@ public class PrincipalVisual extends JFrame {
 		newWidth = currentSize.width + additionalWidth;
 		mnNewMenu_5.setPreferredSize(new Dimension(newWidth, currentSize.height));
 		
-		JMenu mnNewMenu_6 = new JMenu("Administradores");
+		JMenu mnNewMenu_6 = new JMenu("Reg Usuario");
 		mnNewMenu_6.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				RegAdministradores regadministradores = new RegAdministradores();
-				regadministradores.setSize(1904,908);
-				regadministradores.setLocation(0,0);
+				RegUsuarios regUsuarios = new RegUsuarios();
+				regUsuarios.setSize(1904,908);
+				regUsuarios.setLocation(0,0);
 				
 				content.removeAll();
-				content.add(regadministradores, BorderLayout.CENTER);
+				content.add(regUsuarios, BorderLayout.CENTER);
 				content.revalidate();
 				content.repaint();
 			}

@@ -10,18 +10,33 @@ import javax.swing.border.EmptyBorder;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 
+import logico.Clinica;
+import logico.User;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JPasswordField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class IniciarSesion extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField txtUser;
+	private JPasswordField txtPass;
 
 	/**
 	 * Launch the application.
@@ -43,7 +58,50 @@ public class IniciarSesion extends JFrame {
 				}
 			}
 		});
-	}
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					FileInputStream clinica;
+					FileOutputStream clinica2;
+					ObjectInputStream clinicaRead;
+					ObjectOutputStream clinicaWrite;
+					try {
+						clinica = new FileInputStream("clinica.dat");
+						clinicaRead = new ObjectInputStream(clinica);
+						Clinica temp = (Clinica) clinicaRead.readObject();
+						Clinica.setClinica(temp);
+						clinica.close();
+						clinicaRead.close();
+					} catch (FileNotFoundException e) {
+						try {
+							clinica2 = new FileOutputStream("clinica.dat");
+							clinicaWrite = new ObjectOutputStream(clinica2);
+							User admin = new User("admin", "admin", "Administrador");
+							Clinica.getInstance().AgregarUser(admin);
+							clinicaWrite.writeObject(Clinica.getInstance());
+							clinica2.close();
+							clinicaWrite.close();
+						} catch (FileNotFoundException e1) {
+
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					try {
+						IniciarSesion frame = new IniciarSesion();
+						frame.setVisible(true);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		}
+	
+	
 
 	/**
 	 * Create the frame.
@@ -66,27 +124,34 @@ public class IniciarSesion extends JFrame {
 		lblNewLabel.setBounds(224, 39, 198, 58);
 		panel.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Nombre");
+		JLabel lblNewLabel_1 = new JLabel("Usuario");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_1.setBounds(53, 151, 56, 16);
 		panel.add(lblNewLabel_1);
 		
-		JLabel lblContrasea = new JLabel("Contrase\u00F1a");
-		lblContrasea.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblContrasea.setBounds(53, 215, 82, 16);
-		panel.add(lblContrasea);
+		JLabel lblPass = new JLabel("Contrase\u00F1a");
+		lblPass.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblPass.setBounds(53, 215, 82, 16);
+		panel.add(lblPass);
 		
-		textField = new JTextField();
-		textField.setBounds(169, 144, 320, 32);
-		panel.add(textField);
-		textField.setColumns(10);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(169, 208, 320, 32);
-		panel.add(textField_1);
+		txtUser = new JTextField();
+		txtUser.setBounds(169, 144, 320, 32);
+		panel.add(txtUser);
+		txtUser.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Ingresar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (Clinica.getInstance().confirmLogin(txtUser.getText(), String.valueOf(txtPass.getPassword()))) {
+					PrincipalVisual frame = new PrincipalVisual();
+					dispose();
+					frame.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "El usuario ingresado no es válido", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnNewButton.setBounds(420, 298, 120, 32);
 		panel.add(btnNewButton);
@@ -95,5 +160,9 @@ public class IniciarSesion extends JFrame {
 		lblNewLabel_2.setIcon(new ImageIcon(IniciarSesion.class.getResource("/Fotos/medic_logo75px.png")));
 		lblNewLabel_2.setBounds(120, 30, 75, 75);
 		panel.add(lblNewLabel_2);		
+		
+		txtPass = new JPasswordField();
+		txtPass.setBounds(169, 209, 320, 32);
+		panel.add(txtPass);
 	}
 }
