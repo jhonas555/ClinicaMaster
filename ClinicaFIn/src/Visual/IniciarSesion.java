@@ -41,6 +41,7 @@ public class IniciarSesion extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(new FlatDarkLaf());
@@ -65,7 +66,7 @@ public class IniciarSesion extends JFrame {
 					ObjectInputStream clinicaRead;
 					ObjectOutputStream clinicaWrite;
 					try {
-						clinica = new FileInputStream("clinica.dat");
+						clinica = new FileInputStream("clinica1.dat");
 						clinicaRead = new ObjectInputStream(clinica);
 						Clinica temp = (Clinica) clinicaRead.readObject();
 						Clinica.setClinica(temp);
@@ -73,7 +74,7 @@ public class IniciarSesion extends JFrame {
 						clinicaRead.close();
 					} catch (FileNotFoundException e) {
 						try {
-							clinica2 = new FileOutputStream("clinica.dat");
+							clinica2 = new FileOutputStream("clinica1.dat");
 							clinicaWrite = new ObjectOutputStream(clinica2);
 							User admin = new User("admin", "admin", "Administrador");
 							Clinica.getInstance().AgregarUser(admin);
@@ -91,18 +92,11 @@ public class IniciarSesion extends JFrame {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					try {
-						IniciarSesion frame = new IniciarSesion();
-						frame.setVisible(true);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
 				}
 			});
 		}
 	
 	
-
 	/**
 	 * Create the frame.
 	 */
@@ -142,6 +136,7 @@ public class IniciarSesion extends JFrame {
 		JButton btnNewButton = new JButton("Ingresar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				if (Clinica.getInstance().confirmLogin(txtUser.getText(), String.valueOf(txtPass.getPassword()))) {
 					PrincipalVisual frame = new PrincipalVisual();
 					dispose();

@@ -25,9 +25,8 @@ public class RegUsuarios extends JPanel {
 	private JTable table;
 	private JTextField txtUser;
 	private JTextField txtPass;
-	private JComboBox<String> cmbtipo;
 	private User user;
-	private JComboBox comboBox;
+	private JComboBox<String> cmbtipo;
 
 	/**
 	 * Create the panel.
@@ -106,9 +105,9 @@ public class RegUsuarios extends JPanel {
 		lblTipo.setBounds(28, 218, 88, 16);
 		add(lblTipo);
 		
-		comboBox = new JComboBox();
-		comboBox.setBounds(165, 218, 149, 20);
-		add(comboBox);
+		cmbtipo = new JComboBox();
+		cmbtipo.setBounds(165, 218, 149, 20);
+		add(cmbtipo);
 	}
 	private void modificarUsuario() {
 		user.setUsuario(txtUser.getText());
