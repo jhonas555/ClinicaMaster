@@ -5,23 +5,33 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 
+import logico.Cita;
 import logico.Clinica;
 import logico.Doctor;
+import logico.Enfermedad;
 import logico.Paciente;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.ListSelectionModel;
 
 public class RegCitas extends JPanel {
 	private JTextField txtId;
 	private JTable table;
-	private JTextField textField;
+	private JTextField txtFecha;
 	private JTextField txtDoctor;
 	private JTextField txtPaciente;
 	final static Doctor[] doctorHolder = {null};
@@ -62,37 +72,68 @@ public class RegCitas extends JPanel {
 		add(scrollPane);
 		
 		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 		scrollPane.setViewportView(table);
 		
 		JButton btnNewButton = new JButton("Agregar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				Date fecha = null;
+				try {
+					fecha = validateAndConvertToDate(txtFecha.getText());
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					fecha = null;
+				}
+				if (fecha != null) {
+					Cita cita = new Cita(txtId.getText(), fecha ,doctorSelec, pacienteSelec);
+					Clinica.getInstance().agregarCita(cita);
+					clean();
+				} else {
+					JOptionPane.showMessageDialog(null, "La fecha no es valida", "Fehca", JOptionPane.INFORMATION_MESSAGE);
+				}
+				
+				
+				//Clinica.getInstance().agregarEnfermedad(enfermedad);
+				//JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Registro", JOptionPane.INFORMATION_MESSAGE);
+				//clean();
+				//loadEnfermedades();
+				
 			}
+
+			
 		});
 		btnNewButton.setBounds(900, 525, 120, 32);
 		add(btnNewButton);
 		
-		JButton btnModificar = new JButton("Guardar");
+		JButton btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		btnModificar.setBounds(768, 525, 120, 32);
 		add(btnModificar);
+		btnModificar.setEnabled(false);
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.setBounds(636, 525, 120, 32);
 		add(btnEliminar);
+		btnEliminar.setEnabled(false);
 		
 		JLabel lblFecha = new JLabel("Fecha");
 		lblFecha.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblFecha.setBounds(28, 157, 56, 16);
 		add(lblFecha);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(165, 150, 330, 32);
-		add(textField);
+		txtFecha = new JTextField();
+		txtFecha.setColumns(10);
+		txtFecha.setBounds(165, 150, 330, 32);
+		add(txtFecha);
 		
 		JLabel lblId = new JLabel("ID");
 		lblId.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -150,5 +191,33 @@ public class RegCitas extends JPanel {
 		});
 		button_1.setBounds(504, 525, 120, 32);
 		add(button_1);
+	}
+	
+	public static Date validateAndConvertToDate(String inputDate) throws ParseException {
+        // Define el formato de fecha esperado
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false); // Para asegurar una validación estricta de la fecha
+
+        // Define el patrón regex para dd/mm/yyyy
+        String datePattern = "\\b(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/(\\d{4})\\b";
+        if (!inputDate.matches(datePattern)) {
+            throw new ParseException("Formato de fecha inválido", 0);
+        }
+
+        // Intenta analizar la fecha con SimpleDateFormat
+        return dateFormat.parse(inputDate);
+    }
+	
+	
+	private void clean() {
+		txtId.setText(""+Clinica.getIdCitas());
+		txtFecha.setText("");
+		txtDoctor.setText("");
+		txtPaciente.setText(null);
+		doctorSelec = null;
+		
+		pacienteSelec = null;
+		
+		
 	}
 }

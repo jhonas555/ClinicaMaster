@@ -9,23 +9,28 @@ import java.util.stream.Collectors;
 
 public class Cita implements Serializable{
 	
+	public Cita(String id, Date string, Doctor doctorSelec, Paciente pacienteSelec) {
+		super();
+		this.id = id;
+		this.fecha = string;
+		this.paciente = pacienteSelec;
+		this.doctor = doctorSelec;
+	}
+
+
 	private static final long serialVersionUID = 6871317562401895570L;
 
 	private String id;
 	private Date fecha;
-	private Boolean estado;
 	private Paciente paciente;
 	private Doctor doctor;
 	
-	public Cita(Paciente paciente, Doctor doctor, Date fecha) {
-		super();
-		this.id = (String) id;
-		this.fecha = fecha;
-		this.paciente = paciente;
-		this.doctor = doctor;
-	}	
+
 	
 	
+	
+
+
 	public String getId() {
 		return id;
 	}
@@ -58,11 +63,5 @@ public class Cita implements Serializable{
 		this.doctor = doctor;
 	}
 
-	public Boolean getEstado() {
-		return estado;
-	}
 
-	public void setEstado(Boolean estado) {
-		this.estado = estado;
-	}
 }
