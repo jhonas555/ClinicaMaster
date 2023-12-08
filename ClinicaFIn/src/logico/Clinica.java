@@ -224,7 +224,7 @@ private static void guardarUsuariosEnArchivo() {
 }
 
 private static void cargarUsuarioDesdeArchivo() {
-    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("losUsuarios.dat"))) {
+    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Usuarios.dat"))) {
         ArrayList<User> loadedUsuarios = (ArrayList<User>) ois.readObject();
         if (loadedUsuarios != null && !loadedUsuarios.isEmpty()) {
             clinica.losUsuarios = loadedUsuarios;
