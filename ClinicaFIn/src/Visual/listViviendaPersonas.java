@@ -85,8 +85,7 @@ public class listViviendaPersonas extends JDialog {
 	 * @param listaDoctor2 
 	 */
 	public listViviendaPersonas(String string, String string2, ArrayList<Doctor> listaDoctorReferencia, ArrayList<Paciente> listaPacienteReferencia) {
-		ArrayList<Doctor> antiguaListaDoctores = listaDoctorReferencia;
-		ArrayList<Paciente> antiguaListaPacientes = listaPacienteReferencia;
+		
 		
 		setResizable(false);
 		setLocationRelativeTo(null); 

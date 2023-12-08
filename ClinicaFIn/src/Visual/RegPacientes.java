@@ -15,11 +15,13 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 import logico.Clinica;
 import logico.Doctor;
 import logico.Paciente;
+import logico.Vacuna;
 
 public class RegPacientes extends JPanel {
     private JTextField txtId;
@@ -36,6 +38,8 @@ public class RegPacientes extends JPanel {
 	private JButton btnEliminar;
 	private JButton btnModificar;
 	private Paciente pacienteselec = null;
+	
+	private ArrayList<Vacuna> listaVacunas = new ArrayList<Vacuna>();
 
     /**
      * Create the panel.
@@ -243,7 +247,7 @@ public class RegPacientes extends JPanel {
 
 		btnAdministrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				listVacunasPuestas ventanaVacunas = new listVacunasPuestas();
+				listVacunasPuestas ventanaVacunas = new listVacunasPuestas(txtId.getText(), txtNombre.getText(), listaVacunas);
 				ventanaVacunas.setVisible(true);
 			}
 		});

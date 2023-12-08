@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -23,6 +24,10 @@ import javax.swing.table.DefaultTableModel;
 import com.formdev.flatlaf.FlatDarkLaf;
 
 import logico.Clinica;
+import logico.Doctor;
+import logico.Enfermedad;
+import logico.Paciente;
+import logico.Persona;
 import logico.Vacuna;
 
 public class listVacunasPuestas extends JDialog {
@@ -30,17 +35,22 @@ public class listVacunasPuestas extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JButton btnListo;
 	private JButton btnPasar;
-	private JTable tblVacunas;
-	private JTable tblVacPuesta;
-	
-	private static ArrayList<Vacuna> listaVacunas = Clinica.getInstance().getLasVacunas();
-	private static ArrayList<Vacuna> listaVacPuestas = new ArrayList<Vacuna>();
-	private static DefaultTableModel modelVacuna;
-	private static DefaultTableModel modelVacPuesta;
-	private static Object[] rowVacuna;
-	private static Object[] rowVacPuesta;
-	private Vacuna vacSeleccionada = null;
-	private Vacuna tratadaSeleccionada = null;
+	private JButton btnDevolver;
+	private JTable tblPersonas;
+	private JTable tblVivePersona;
+	private static String IdVivienda;
+	private static String NombreVivienda;
+	private static ArrayList<Vacuna> listaVacuna = Clinica.getInstance().getLasVacunas();
+	//private static ArrayList<Doctor> listaViveDoctor = new ArrayList<Doctor>();
+	//private static ArrayList<Paciente> listaVivePaciente = new ArrayList<Paciente>();
+	private static DefaultTableModel modelPersona;
+	private static DefaultTableModel modelVivePersona;
+	private static Object[] rowPersona;
+	private static Object[] rowVivePersona;
+	private Object row[];
+	private DefaultTableModel model;
+	private Vacuna vacunaSeleccionada = null;
+
 
 	/**
 	 * Launch the application.
@@ -55,7 +65,7 @@ public class listVacunasPuestas extends JDialog {
 		
 		
 		try {
-			listVacunasPuestas dialog = new listVacunasPuestas();
+			listVacunasPuestas dialog = new listVacunasPuestas(IdVivienda, NombreVivienda, listaVacuna);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -65,121 +75,138 @@ public class listVacunasPuestas extends JDialog {
 
 	/**
 	 * Create the dialog.
+	 * @param personas 
+	 * @param string 
+	 * @param string2 
+	 * @param listaPaciente2 
+	 * @param listaDoctor2 
 	 */
-	public listVacunasPuestas() {
+	public listVacunasPuestas(String string, String string2, ArrayList<Vacuna> listaVacunaReferencia) {
+
+		
 		setResizable(false);
 		setLocationRelativeTo(null); 
-		setBounds(650, 200, 713, 325);
+		setBounds(650, 200, 763, 446);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		{
 			JPanel panelListado = new JPanel();
-			panelListado.setBorder(new TitledBorder(null, "Administrar Vacunas Puestas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panelListado.setBounds(10, 11, 675, 240);
+			panelListado.setBorder(new TitledBorder(null, "Administrar Personas en la Vivienda", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			panelListado.setBounds(10, 11, 735, 347);
 			contentPanel.add(panelListado);
 			panelListado.setLayout(null);
 			{
-				JPanel panelVacunas = new JPanel();
-				panelVacunas.setBorder(new TitledBorder(null, "Lista de Vacunas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-				panelVacunas.setBounds(10, 23, 298, 176);
-				panelListado.add(panelVacunas);
-				panelVacunas.setLayout(new BorderLayout(0, 0));
+				JPanel panelPersonas = new JPanel();
+				panelPersonas.setBorder(new TitledBorder(null, "Lista de Personas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				panelPersonas.setBounds(10, 23, 298, 311);
+				panelListado.add(panelPersonas);
+				panelPersonas.setLayout(new BorderLayout(0, 0));
 				{
 					JScrollPane scrollPane = new JScrollPane();
 					scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-					panelVacunas.add(scrollPane, BorderLayout.CENTER);
+					panelPersonas.add(scrollPane, BorderLayout.CENTER);
 					
-					String[] headerVacunas = {"Vacunas"};
-					modelVacuna = new DefaultTableModel();
-					modelVacuna.setColumnIdentifiers(headerVacunas);
-					tblVacunas = new JTable();
-					tblVacunas.addMouseListener(new MouseAdapter() {
-						public void mouseClicked(MouseEvent e) {
-							int index = tblVacunas.getSelectedRow();
+					String[] headerPersonas = {"Id", "Nombre"};
+					modelPersona = new DefaultTableModel();
+					modelPersona.setColumnIdentifiers(headerPersonas);
+					tblPersonas = new JTable();
+					
+					tblPersonas.addMouseListener(new MouseAdapter() {
+						public void mousePressed(MouseEvent e) {
+							int index = tblPersonas.getSelectedRow();
+							Object idObject = tblPersonas.getValueAt(index, 0);
+							String id = String.valueOf(idObject);
+							
 							if(index>=0)
 							{
-								vacSeleccionada = listaVacunas.get(index);
-								tratadaSeleccionada = null;
-								btnPasar.setText(">>");
+								vacunaSeleccionada = Clinica.getInstance().buscarVacunaPorNumeroLote(id);
+								
 								btnPasar.setEnabled(true);
+								btnDevolver.setEnabled(false);
 							}
 						}
 					});
-					tblVacunas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-					tblVacunas.setModel(modelVacuna);
-					scrollPane.setViewportView(tblVacunas);
+					tblPersonas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+					tblPersonas.setModel(modelPersona);
+					scrollPane.setViewportView(tblPersonas);
 				}
 			}
 			{
-				JPanel panelVacPuestas = new JPanel();
-				panelVacPuestas.setBorder(new TitledBorder(null, "Vacunas Puestas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-				panelVacPuestas.setBounds(367, 23, 298, 176);
-				panelListado.add(panelVacPuestas);
-				panelVacPuestas.setLayout(new BorderLayout(0, 0));
+				JPanel panelVivePersonas = new JPanel();
+				panelVivePersonas.setBorder(new TitledBorder(null, "Pertenecen a esta vivienda", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				panelVivePersonas.setBounds(405, 23, 298, 311);
+				panelListado.add(panelVivePersonas);
+				panelVivePersonas.setLayout(new BorderLayout(0, 0));
 				
 				JScrollPane scrollPane = new JScrollPane();
 				scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-				panelVacPuestas.add(scrollPane, BorderLayout.CENTER);
+				panelVivePersonas.add(scrollPane, BorderLayout.CENTER);
 				
-				tblVacPuesta = new JTable();
-				String[] headerVacPuesta = {"Vacunas"};
-				modelVacPuesta = new DefaultTableModel();
-				modelVacPuesta.setColumnIdentifiers(headerVacPuesta);
-				tblVacPuesta.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						int index = tblVacPuesta.getSelectedRow();
+				tblVivePersona = new JTable();
+				String[] headerVivePersona = {"Id", "Nombre"};
+				modelVivePersona = new DefaultTableModel();
+				modelVivePersona.setColumnIdentifiers(headerVivePersona);
+				tblVivePersona.addMouseListener(new MouseAdapter() {
+					public void mousePressed(MouseEvent e) {
+						int index = tblVivePersona.getSelectedRow();
+						Object idObject = tblVivePersona.getValueAt(index, 0);
+						String id = String.valueOf(idObject);
+						
+						
 						if(index>=0)
 						{
-							tratadaSeleccionada = listaVacPuestas.get(index);
-							vacSeleccionada = null;
-							btnPasar.setText("<<");
-							btnPasar.setEnabled(true);
+							vacunaSeleccionada = Clinica.getInstance().buscarVacunaPorNumeroLote(id);
+	
+							btnPasar.setEnabled(false);
+							btnDevolver.setEnabled(true);
 						}
 					}
 				});
-				tblVacPuesta.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				tblVacPuesta.setModel(modelVacPuesta);
-				scrollPane.setViewportView(tblVacPuesta);
+				tblVivePersona.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				tblVivePersona.setModel(modelVivePersona);
+				scrollPane.setViewportView(tblVivePersona);
 			}
 			{
+				btnDevolver = new JButton("<<");
+				btnDevolver.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						btnDevolver.setEnabled(false);
+						
+
+						listaVacunaReferencia.remove(vacunaSeleccionada);
+						
+						
+						
+						
+						imprimirVivePersona(listaVacunaReferencia);
+						imprimirPersonas(listaVacunaReferencia);
+						//habilitarBotonListo();
+						
+					}
+				});
 				btnPasar = new JButton(">>");
 				btnPasar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						btnPasar.setEnabled(false);
-						btnPasar.setText("");
-						if(vacSeleccionada!= null)
-						{
-							listaVacPuestas.add(vacSeleccionada);
-							listaVacunas.remove(vacSeleccionada);
-						}
-						imprimirVacPuesta();
-						imprimirVacunas();
-						habilitarBotonListo();
+						
+						listaVacunaReferencia.add(vacunaSeleccionada);
+						
+						imprimirVivePersona(listaVacunaReferencia);
+						imprimirPersonas(listaVacunaReferencia);
+						//habilitarBotonListo();
 					}
 				});
 				btnPasar.setEnabled(false);
-				btnPasar.setBounds(313, 69, 49, 23);
+				btnPasar.setBounds(335, 130, 58, 36);
 				panelListado.add(btnPasar);
 			}
 			
-			JButton btnDevolver = new JButton("<<");
-			btnPasar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					btnPasar.setEnabled(false);
-					btnPasar.setText("");
-					if(vacSeleccionada != null) {
-						listaVacunas.add(tratadaSeleccionada);
-						listaVacPuestas.remove(tratadaSeleccionada);
-					}
-					imprimirVacPuesta();
-					imprimirVacunas();
-					habilitarBotonListo();
-				}
-			});
+			
+			
 			btnDevolver.setEnabled(false);
-			btnDevolver.setBounds(313, 143, 49, 23);
+			btnDevolver.setBounds(335, 220, 58, 36);
 			panelListado.add(btnDevolver);
 		}
 		{
@@ -191,32 +218,38 @@ public class listVacunasPuestas extends JDialog {
 				btnListo = new JButton("Listo");
 				btnListo.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						
+						//listaPacienteReferencia.addAll(listaVivePaciente);
+						
+						
 						dispose();
+						
 					}
 				});
-				btnListo.setEnabled(false);
+				btnListo.setEnabled(true);
 				btnListo.setActionCommand("OK");
 				buttonPane.add(btnListo);
 				getRootPane().setDefaultButton(btnListo);
 			}
 			{
-				JButton cancelButton = new JButton("Cancelar");
+				
+				/*JButton cancelButton = new JButton("Cancelar");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
+				buttonPane.add(cancelButton);*/
 			}
 		}
-		imprimirVacPuesta();
-		imprimirVacunas();
+		imprimirVivePersona(listaVacunaReferencia);
+		imprimirPersonas(listaVacunaReferencia);
 	}
 
 
 	private void habilitarBotonListo() {
-		if(tblVacPuesta.getRowCount() > 0)
+		if(tblVivePersona.getRowCount() > 0)
 		{
 			btnListo.setEnabled(true);
 			return;
@@ -224,23 +257,38 @@ public class listVacunasPuestas extends JDialog {
 		btnListo.setEnabled(false);
 	}
 	
-	public static void imprimirVacunas()
-	{
-		modelVacuna.setRowCount(0);
-		rowVacuna = new Object[modelVacuna.getColumnCount()];
-		for (Vacuna Vacuna : listaVacunas) {
-			rowVacuna[0] = Vacuna.getClass().getSimpleName();
-			modelVacuna.addRow(rowVacuna);
-		}
+	public static void imprimirPersonas(ArrayList<Vacuna> listaVacunaReferencia) {
+	    modelPersona.setRowCount(0);
+	    rowPersona = new Object[modelPersona.getColumnCount()];
+
+	    // Printing persons from listaDoctor excluding those in listaViveDoctor
+	    for (Vacuna vacuna : listaVacuna) {
+	        if (!isVacunaInList(vacuna, listaVacunaReferencia)) {
+	            rowPersona[0] = vacuna.getNumeroLote();
+	            rowPersona[1] = vacuna.getNombre();
+	            modelPersona.addRow(rowPersona);
+	        }
+	    }
+
+	}
+
+	// Helper method to check if a person is in the exclusion list
+	private static boolean isVacunaInList(Vacuna vacuna, List<? extends Vacuna> exclusionList) {
+	    return exclusionList.contains(vacuna);
 	}
 	
-	public static void imprimirVacPuesta()
+	public static void imprimirVivePersona(ArrayList<Vacuna> listaVacunaReferencia)
 	{
-		modelVacPuesta.setRowCount(0);
-		rowVacPuesta = new Object[modelVacPuesta.getColumnCount()];
-		for (Vacuna Vacuna : listaVacPuestas) {
-			rowVacPuesta[0] = Vacuna.getClass().getSimpleName();
-			modelVacPuesta.addRow(rowVacPuesta);
+		modelVivePersona.setRowCount(0);
+		rowVivePersona = new Object[modelVivePersona.getColumnCount()];
+		
+		for (Vacuna vacuna : listaVacunaReferencia) {
+			rowVivePersona[0] = vacuna.getNumeroLote();
+			rowVivePersona[1] = vacuna.getNombre();
+			modelVivePersona.addRow(rowVivePersona);
 		}
+		
 	}
+	
+	
 }

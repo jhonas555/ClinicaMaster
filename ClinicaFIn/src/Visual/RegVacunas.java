@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import logico.Cita;
@@ -73,6 +74,9 @@ public class RegVacunas extends JPanel {
 		add(scrollPane);
 		
 		table = new JTable();
+	
+		
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		table.setModel(model);
 		scrollPane.setViewportView(table);
