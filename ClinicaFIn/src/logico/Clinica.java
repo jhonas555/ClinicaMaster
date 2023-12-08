@@ -696,7 +696,7 @@ public void actualizarConsulta(String id, Consulta nuevoConsulta) {
 	                    .max(Integer::compare)
 	                    .orElse(0);
 	            
-	            idVacunas = maxId + 1;
+	            idViviendas = maxId + 1;
 	        } else {
 	            clinica.lasVacunas = new ArrayList<>();
 	        }

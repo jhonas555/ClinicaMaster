@@ -93,13 +93,13 @@ public class listVacunasPuestas extends JDialog {
 		contentPanel.setLayout(null);
 		{
 			JPanel panelListado = new JPanel();
-			panelListado.setBorder(new TitledBorder(null, "Administrar Personas en la Vivienda", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			panelListado.setBorder(new TitledBorder(null, "Administrar Vacunas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			panelListado.setBounds(10, 11, 735, 347);
 			contentPanel.add(panelListado);
 			panelListado.setLayout(null);
 			{
 				JPanel panelPersonas = new JPanel();
-				panelPersonas.setBorder(new TitledBorder(null, "Lista de Personas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				panelPersonas.setBorder(new TitledBorder(null, "Lista de Vacunas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 				panelPersonas.setBounds(10, 23, 298, 311);
 				panelListado.add(panelPersonas);
 				panelPersonas.setLayout(new BorderLayout(0, 0));
@@ -135,7 +135,7 @@ public class listVacunasPuestas extends JDialog {
 			}
 			{
 				JPanel panelVivePersonas = new JPanel();
-				panelVivePersonas.setBorder(new TitledBorder(null, "Pertenecen a esta vivienda", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				panelVivePersonas.setBorder(new TitledBorder(null, "Vacunas Puestas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 				panelVivePersonas.setBounds(405, 23, 298, 311);
 				panelListado.add(panelVivePersonas);
 				panelVivePersonas.setLayout(new BorderLayout(0, 0));
