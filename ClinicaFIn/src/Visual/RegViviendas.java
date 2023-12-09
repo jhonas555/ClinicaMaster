@@ -88,7 +88,7 @@ public class RegViviendas extends JPanel {
 				clean();
 			}
 		});
-		btnNewButton.setBounds(900, 512, 120, 32);
+		btnNewButton.setBounds(900, 851, 120, 32);
 		add(btnNewButton);
 		
 		JButton btnModificar = new JButton("Modificar");
@@ -106,7 +106,7 @@ public class RegViviendas extends JPanel {
 				
 			}
 		});
-		btnModificar.setBounds(768, 512, 120, 32);
+		btnModificar.setBounds(768, 851, 120, 32);
 		add(btnModificar);
 		btnModificar.setEnabled(false);
 		
@@ -124,7 +124,7 @@ public class RegViviendas extends JPanel {
 				btnNewButton.setEnabled(true);
 			}
 		});
-		btnEliminar.setBounds(636, 512, 120, 32);
+		btnEliminar.setBounds(636, 851, 120, 32);
 		add(btnEliminar);
 		btnEliminar.setEnabled(false);
 		
@@ -153,7 +153,7 @@ public class RegViviendas extends JPanel {
 				clean();
 			}
 		});
-		btnViviendaNueva.setBounds(451, 512, 173, 32);
+		btnViviendaNueva.setBounds(451, 851, 173, 32);
 		add(btnViviendaNueva);
 		
 		JLabel lblPeronas = new JLabel("Personas");

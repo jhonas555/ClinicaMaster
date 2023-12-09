@@ -130,7 +130,7 @@ public class RegPacientes extends JPanel {
 				}			
 			}
 		});
-        btnNewButton.setBounds(900, 617, 120, 32);
+        btnNewButton.setBounds(900, 851, 120, 32);
         add(btnNewButton);
 
         btnModificar = new JButton("Modificar");
@@ -157,7 +157,7 @@ public class RegPacientes extends JPanel {
 
             }
         });
-        btnModificar.setBounds(768, 617, 120, 32);
+        btnModificar.setBounds(768, 851, 120, 32);
         add(btnModificar);
 
         btnEliminar = new JButton("Eliminar");
@@ -183,7 +183,7 @@ public class RegPacientes extends JPanel {
         	}
         });
         btnEliminar.setEnabled(false);
-        btnEliminar.setBounds(636, 617, 120, 32);
+        btnEliminar.setBounds(636, 851, 120, 32);
         add(btnEliminar);
 
         JLabel lblFecha = new JLabel("Nombre");
@@ -206,7 +206,7 @@ public class RegPacientes extends JPanel {
             public void actionPerformed(ActionEvent e) {
             }
         });
-        btnPacienteNuevo.setBounds(504, 617, 120, 32);
+        btnPacienteNuevo.setBounds(504, 851, 120, 32);
         add(btnPacienteNuevo);
 
         txtNombre = new JTextField();

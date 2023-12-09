@@ -101,7 +101,7 @@ public class RegUsuarios extends JPanel {
 				}
 			}
 			*/
-		btnRegist.setBounds(900, 685, 120, 32);
+		btnRegist.setBounds(900, 851, 120, 32);
 		add(btnRegist);
 		
 
@@ -124,7 +124,7 @@ public class RegUsuarios extends JPanel {
 		});
 		
 		
-		btnEliminar.setBounds(636, 685, 120, 32);
+		btnEliminar.setBounds(636, 851, 120, 32);
 		add(btnEliminar);
 		
 		
@@ -144,7 +144,7 @@ public class RegUsuarios extends JPanel {
 			}
 		});
 		
-		btnModificar.setBounds(768, 685, 120, 32);
+		btnModificar.setBounds(768, 851, 120, 32);
 		add(btnModificar);
 		
 		JLabel lblUsuario = new JLabel("Usuario");

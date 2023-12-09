@@ -87,7 +87,7 @@ public class RegConsultas extends JPanel {
                 
 			}
 		});
-		btnNewButton.setBounds(900, 559, 120, 32);
+		btnNewButton.setBounds(900, 851, 120, 32);
 		add(btnNewButton);
 		
 		JButton btnModificar = new JButton("Guardar");
@@ -95,11 +95,11 @@ public class RegConsultas extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnModificar.setBounds(768, 559, 120, 32);
+		btnModificar.setBounds(768, 851, 120, 32);
 		add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(636, 559, 120, 32);
+		btnEliminar.setBounds(636, 851, 120, 32);
 		add(btnEliminar);
 		
 		JLabel lblFecha = new JLabel("Fecha");
@@ -127,7 +127,7 @@ public class RegConsultas extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		button_1.setBounds(504, 559, 120, 32);
+		button_1.setBounds(504, 851, 120, 32);
 		add(button_1);
 		
 		textFecha = new JTextField();

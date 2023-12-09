@@ -137,7 +137,7 @@ public class RegDoctores extends JPanel {
 			}
 		});
         
-        btnNewButton.setBounds(900, 595, 120, 32);
+        btnNewButton.setBounds(900, 851, 120, 32);
         add(btnNewButton);
         btnNewButton.setEnabled(true);
 
@@ -165,7 +165,7 @@ public class RegDoctores extends JPanel {
                 
             }
         });
-        btnModificar.setBounds(768, 595, 120, 32);
+        btnModificar.setBounds(768, 851, 120, 32);
         add(btnModificar);
         btnModificar.setEnabled(false);
 
@@ -193,7 +193,7 @@ public class RegDoctores extends JPanel {
         	}
         });
         btnEliminar.setEnabled(false);
-        btnEliminar.setBounds(636, 595, 120, 32);
+        btnEliminar.setBounds(636, 851, 120, 32);
         add(btnEliminar);
 
         JLabel lblFecha = new JLabel("Nombre");
@@ -216,7 +216,7 @@ public class RegDoctores extends JPanel {
             public void actionPerformed(ActionEvent e) {
             }
         });
-        btnNuevoDoctor.setBounds(504, 595, 120, 32);
+        btnNuevoDoctor.setBounds(504, 851, 120, 32);
         add(btnNuevoDoctor);
 
         txtNombre = new JTextField();

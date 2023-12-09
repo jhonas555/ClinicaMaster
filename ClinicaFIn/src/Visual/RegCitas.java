@@ -114,18 +114,18 @@ public class RegCitas extends JPanel {
 
 			
 		});
-		btnNewButton.setBounds(900, 525, 120, 32);
+		btnNewButton.setBounds(900, 851, 120, 32);
 		add(btnNewButton);
 		
 		JButton btnModificar = new JButton("Modificar");
 		
-		btnModificar.setBounds(768, 525, 120, 32);
+		btnModificar.setBounds(768, 851, 120, 32);
 		add(btnModificar);
 		btnModificar.setEnabled(false);
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		
-		btnEliminar.setBounds(636, 525, 120, 32);
+		btnEliminar.setBounds(636, 851, 120, 32);
 		add(btnEliminar);
 		btnEliminar.setEnabled(false);
 		
@@ -201,7 +201,7 @@ public class RegCitas extends JPanel {
 				clean();		
 			}
 		});
-		button_1.setBounds(504, 525, 120, 32);
+		button_1.setBounds(498, 851, 120, 32);
 		add(button_1);
 		
 		JLabel lblDdmmyyyyformatoObligatorio = new JLabel("dd/mm/yyyy (Formato obligatorio)");

@@ -94,18 +94,18 @@ public class RegVacunas extends JPanel {
 
 			
 		});
-		btnNewButton.setBounds(900, 573, 120, 32);
+		btnNewButton.setBounds(900, 851, 120, 32);
 		add(btnNewButton);
 		
 		JButton btnModificar = new JButton("Modificar");
 		
-		btnModificar.setBounds(768, 573, 120, 32);
+		btnModificar.setBounds(768, 851, 120, 32);
 		add(btnModificar);
 		btnModificar.setEnabled(false);
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		
-		btnEliminar.setBounds(636, 573, 120, 32);
+		btnEliminar.setBounds(636, 851, 120, 32);
 		add(btnEliminar);
 		btnEliminar.setEnabled(false);
 		
@@ -129,7 +129,7 @@ public class RegVacunas extends JPanel {
 				clean();	
 			}
 		});
-		btnVacunaNueva.setBounds(504, 573, 120, 32);
+		btnVacunaNueva.setBounds(504, 851, 120, 32);
 		add(btnVacunaNueva);
 		
 		txtNombre = new JTextField();
